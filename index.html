@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLB Viewer</title>
+    <title>SurfSLAM: Sim-to-Real Underwater Stereo Reconstruction For Real-Time SLAM</title>
+    <link rel="icon" type="image/svg+xml" href="static/logo/frog-logo.svg">
     <style>
         * {
             margin: 0;
@@ -32,9 +33,98 @@
         }
         
         header h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
+            font-size: 36px;
+            margin-bottom: 20px;
             color: #222;
+            line-height: 1.3;
+        }
+        
+        .authors {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 20px;
+            margin-bottom: 15px;
+        }
+        
+        .author {
+            font-size: 16px;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .author:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        .author sup {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .author-break {
+            flex-basis: 100%;
+            height: 0;
+        }
+        
+        .equal-contrib {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .logos img {
+            height: 60px;
+            width: auto;
+        }
+        
+        .abstract-section {
+            margin-bottom: 40px;
+        }
+        
+        .abstract-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #222;
+            text-align: center;
+        }
+        
+        .abstract-text {
+            text-align: justify;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #444;
+            max-width: 100%;
+        }
+        
+        .figure-section {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .figure-section img,
+        .figure-section object {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .figure-caption {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
         }
         
         header p {
@@ -61,7 +151,7 @@
         
         .viewer-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin-top: 30px;
         }
@@ -73,13 +163,95 @@
             overflow: hidden;
         }
         
+        .viewer-container.full-width {
+            grid-column: span 2;
+        }
+        
         .viewer-header {
             background: #007bff;
             color: white;
             padding: 15px;
             text-align: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
+        }
+        
+        .viz-mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            padding: 10px 15px;
+            background: #0069d9;
+        }
+        
+        .viz-mode-btn {
+            padding: 6px 16px;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .viz-mode-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .viz-mode-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .viz-mode-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .viz-mode-btn.active {
+            background: white;
+            color: #007bff;
+            font-weight: 600;
+        }
+        
+        .method-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 15px;
+            background: #007bff;
+        }
+        
+        .method-btn {
+            padding: 6px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .method-btn:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .method-btn.active {
+            color: white;
+            border-color: transparent;
+        }
+        
+        .method-btn.clear-all-btn {
+            background: rgba(255, 100, 100, 0.3);
+            border-color: rgba(255, 100, 100, 0.6);
+        }
+        
+        .method-btn.clear-all-btn:hover {
+            background: rgba(255, 100, 100, 0.5);
+            border-color: rgba(255, 100, 100, 0.8);
         }
         
         .viewer-canvas {
@@ -100,9 +272,46 @@
             color: #333;
         }
         
+        .legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: white;
+            min-width: 120px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        
+        .legend-label {
+            white-space: nowrap;
+        }
+        
         @media (max-width: 1200px) {
             .viewer-grid {
                 grid-template-columns: 1fr;
+            }
+            .viewer-container.full-width {
+                grid-column: span 1;
             }
         }
     </style>
@@ -110,37 +319,109 @@
 <body>
     <div class="container">
         <header>
-            <h1>GLB Viewer</h1>
-            <p>3D Visualization of SLAM Trajectories and Reconstructions</p>
+            <h1>SurfSLAM: Sim-to-Real Underwater Stereo<br>Reconstruction For Real-Time SLAM</h1>
+            <div class="authors">
+                <a href="https://www.obagoren.com/" class="author" target="_blank" rel="noopener">Onur Bagoren<sup>*</sup></a>
+                <a href="https://sethgi.me/" class="author" target="_blank" rel="noopener">Seth Isaacson<sup>*</sup></a>
+                <a href="https://github.com/sacchinbhg" class="author" target="_blank" rel="noopener">Sacchin Sundar</a>
+                <a href="#" class="author" target="_blank" rel="noopener">Yung-Ching Sun</a>
+                <a href="https://anja-sheppard.github.io/" class="author" target="_blank" rel="noopener">Anja Sheppard</a>
+                <div class="author-break"></div>
+                <a href="https://haoyuma2002814.github.io/" class="author" target="_blank" rel="noopener">Haoyu Ma</a>
+                <a href="https://haoyuma2002814.github.io/" class="author" target="_blank" rel="noopener">Abrar Shariff</a>
+                <a href="https://www.roahmlab.com/ram-personal" class="author" target="_blank" rel="noopener">Ram Vasudevan</a>
+                <a href="https://fieldrobotics.engin.umich.edu/team" class="author" target="_blank" rel="noopener">Katherine A. Skinner</a> 
+            </div>
+            <p class="equal-contrib">* Equal contribution</p>
+            <div class="logos">
+                <img src="static/logo/frog-logo.svg" alt="FRoG Lab Logo">
+                <img src="static/logo/informal.png" alt="UM Robotics Logo">
+            </div>
         </header>
         
+        <div class="abstract-section">
+            <h2>Abstract</h2>
+            <p class="abstract-text">
+                Localization and mapping are core perceptual capabilities for underwater robots. Stereo cameras provide a low-cost means of directly estimating metric depth to support these tasks. However, despite recent advances in stereo depth estimation on land, computing depth from image pairs in underwater scenes remains challenging. In underwater environments, images are degraded by light attenuation, visual artifacts, and dynamic lighting conditions. Furthermore, real-world underwater scenes frequently lack rich texture useful for stereo depth estimation and 3D reconstruction. As a result, stereo estimation networks trained on in-air data cannot transfer directly to the underwater domain. In addition, there is a lack of real-world underwater stereo datasets for supervised training of neural networks. Poor underwater depth estimation is compounded in stereo-based Simultaneous Localization and Mapping (SLAM) algorithms, making it a fundamental challenge for underwater robot perception. To address these challenges, we propose a novel framework that enables sim-to-real training of underwater stereo disparity estimation networks using simulated data and self-supervised finetuning. We leverage our learned depth predictions to develop \algname, a novel framework for real-time underwater SLAM that fuses stereo cameras with IMU, barometric, and Doppler Velocity Log (DVL) measurements. Lastly, we collect a challenging real-world dataset of shipwreck surveys using an underwater robot. Our dataset features over 24,000 stereo pairs, along with high-quality, dense photogrammetry models and reference trajectories for evaluation. Through extensive experiments, we demonstrate the advantages of the proposed training approach on real-world data for improving stereo estimation in the underwater domain and for enabling accurate trajectory estimation and 3D reconstruction of complex shipwreck sites.
+                Upon publication, code, real-world underwater data, and simulated training data will be made publicly available.
+            </p>
+        </div>
+        
+        <div class="figure-section">
+            <img src="static/figures/Fig1_V2.png" alt="SurfSLAM Overview Figure">
+        </div>
+        
         <div class="section">
-            <h2>Trajectory Visualizations</h2>
+            <h2>SLAM Results</h2>
             <p>
-                Below are interactive 3D visualizations showing camera trajectories (red frustums) 
-                overlaid on reconstructed point cloud meshes. Use your mouse to interact with each viewer: 
-                left-click and drag to rotate, right-click and drag to pan, and scroll to zoom.
+                Below is an interactive viewer of the SLAM trajectory estimates of our method comapred against baseline methods. 
+                In addition, we visualize the ground truth trajectory and reconstructed point cloud meshes.
             </p>
             
             <div class="viewer-grid">
-                <div class="viewer-container">
-                    <div class="viewer-header">Boiler Room</div>
-                    <div class="viewer-canvas" id="viewer1">
-                        <div class="viewer-info">Left: Rotate | Right: Pan | Scroll: Zoom</div>
+                <div class="viewer-container full-width">
+                    <div class="viewer-header">Long</div>
+                    <div class="viz-mode-toggle" id="vizmode-viewer2">
+                        <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
+                        <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
                     </div>
-                </div>
-                
-                <div class="viewer-container">
-                    <div class="viewer-header">Long Corridor</div>
+                    <div class="method-buttons" id="buttons-viewer2">
+                        <button class="method-btn" data-method="gt">GT</button>
+                        <button class="method-btn" data-method="surfslam">SurfSLAM</button>
+                        <button class="method-btn" data-method="droid">DROID-SLAM</button>
+                        <button class="method-btn" data-method="mast3rslam">MASt3R-SLAM</button>
+                        <button class="method-btn" data-method="orbslam3">ORB-SLAM3</button>
+                        <button class="method-btn" data-method="svin2">SVIn2</button>
+                        <button class="method-btn" data-method="tmap">TURTLMap</button>
+                        <button class="method-btn clear-all-btn">Clear All</button>
+                    </div>
                     <div class="viewer-canvas" id="viewer2">
                         <div class="viewer-info">Left: Rotate | Right: Pan | Scroll: Zoom</div>
+                        <div class="legend" id="legend-viewer2"></div>
                     </div>
                 </div>
                 
                 <div class="viewer-container">
-                    <div class="viewer-header">Start Area</div>
+                    <div class="viewer-header">Boiler</div>
+                    <div class="viz-mode-toggle" id="vizmode-viewer1">
+                        <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
+                        <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
+                    </div>
+                    <div class="method-buttons" id="buttons-viewer1">
+                        <button class="method-btn" data-method="gt">GT</button>
+                        <button class="method-btn" data-method="surfslam">SurfSLAM</button>
+                        <button class="method-btn" data-method="droid">DROID-SLAM</button>
+                        <button class="method-btn" data-method="mast3rslam">MASt3R-SLAM</button>
+                        <button class="method-btn" data-method="orbslam3">ORB-SLAM3</button>
+                        <button class="method-btn" data-method="svin2">SVIn2</button>
+                        <button class="method-btn" data-method="tmap">TURTLMap</button>
+                        <button class="method-btn clear-all-btn">Clear All</button>
+                    </div>
+                    <div class="viewer-canvas" id="viewer1">
+                        <div class="viewer-info">Left: Rotate | Right: Pan | Scroll: Zoom</div>
+                        <div class="legend" id="legend-viewer1"></div>
+                    </div>
+                </div>
+                
+                <div class="viewer-container">
+                    <div class="viewer-header">Engine</div>
+                    <div class="viz-mode-toggle" id="vizmode-viewer3">
+                        <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
+                        <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
+                    </div>
+                    <div class="method-buttons" id="buttons-viewer3">
+                        <button class="method-btn" data-method="gt">GT</button>
+                        <button class="method-btn" data-method="surfslam">SurfSLAM</button>
+                        <button class="method-btn" data-method="droid">DROID-SLAM</button>
+                        <button class="method-btn" data-method="mast3rslam">MASt3R-SLAM</button>
+                        <button class="method-btn" data-method="orbslam3">ORB-SLAM3</button>
+                        <button class="method-btn" data-method="svin2">SVIn2</button>
+                        <button class="method-btn" data-method="tmap">TURTLMap</button>
+                        <button class="method-btn clear-all-btn">Clear All</button>
+                    </div>
                     <div class="viewer-canvas" id="viewer3">
                         <div class="viewer-info">Left: Rotate | Right: Pan | Scroll: Zoom</div>
+                        <div class="legend" id="legend-viewer3"></div>
                     </div>
                 </div>
             </div>
@@ -161,21 +442,163 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+        // Color palette for methods (distinct, colorblind-friendly)
+        const methodColors = {
+            gt:          { hex: '#00ff00', three: 0x00ff00, name: 'Ground Truth' },
+            surfslam:    { hex: '#e41a1c', three: 0xe41a1c, name: 'SurfSLAM' },
+            droid:       { hex: '#377eb8', three: 0x377eb8, name: 'DROID-SLAM' },
+            mast3rslam:  { hex: '#ff7f00', three: 0xff7f00, name: 'MASt3R-SLAM' },
+            orbslam3:    { hex: '#984ea3', three: 0x984ea3, name: 'ORB-SLAM3' },
+            svin2:       { hex: '#ffff33', three: 0xffff33, name: 'SVIn2' },
+            tmap:        { hex: '#a65628', three: 0xa65628, name: 'TURTLMap' },
+        };
+
         // Configuration for each viewer
         const viewers = [
             {
                 containerId: 'viewer1',
-                modelPath: 'static/models/boiler_combined.glb'
+                modelPath: 'static/models/boiler.glb',
+                posesFolder: 'boiler',
+                zoomFactor: 0.4,
+                cameraAngle: { x: -0.9, y: 0.3, z: 0.5 },
+                lookAt: { x: 0, y: 0, z: 0 }
             },
             {
                 containerId: 'viewer2',
-                modelPath: 'static/models/long_combined.glb'
+                modelPath: 'static/models/long.glb',
+                posesFolder: 'long',
+                zoomFactor: 0.15,
+                cameraAngle: { x: -0.4, y: 0.9, z: 1 },
+                lookAt: { x: 0, y: -2.5, z: 0 }
             },
             {
                 containerId: 'viewer3',
-                modelPath: 'static/models/start_combined.glb'
+                modelPath: 'static/models/start.glb',
+                posesFolder: 'start',
+                zoomFactor: 0.2,
+                cameraAngle: { x: 0.9, y: 0.7, z: 0.2 },
+                lookAt: { x: 0, y: 0, z: 0 }
             }
         ];
+
+        // Flip transform to match GLB export (Y and Z axes flipped)
+        const flipTransform = new THREE.Matrix4().makeScale(1, -1, -1);
+
+        // Parse TUM format pose file
+        function parseTUMPoses(text) {
+            const poses = [];
+            const lines = text.trim().split('\n');
+            
+            for (const line of lines) {
+                if (line.startsWith('#') || line.trim() === '') continue;
+                const parts = line.trim().split(/\s+/);
+                if (parts.length < 8) continue;
+                
+                const tx = parseFloat(parts[1]);
+                const ty = parseFloat(parts[2]);
+                const tz = parseFloat(parts[3]);
+                const qx = parseFloat(parts[4]);
+                const qy = parseFloat(parts[5]);
+                const qz = parseFloat(parts[6]);
+                const qw = parseFloat(parts[7]);
+                
+                // Create transformation matrix
+                const quaternion = new THREE.Quaternion(qx, qy, qz, qw);
+                const position = new THREE.Vector3(tx, ty, tz);
+                const matrix = new THREE.Matrix4();
+                matrix.compose(position, quaternion, new THREE.Vector3(1, 1, 1));
+                
+                // Apply the flip transform (Y=-Y, Z=-Z) to match what's baked into the GLB
+                const flippedMatrix = new THREE.Matrix4();
+                flippedMatrix.copy(flipTransform);
+                flippedMatrix.multiply(matrix);
+                flippedMatrix.multiply(flipTransform);
+                
+                poses.push(flippedMatrix);
+            }
+            
+            return poses;
+        }
+
+        // Create camera frustum lines
+        function createFrustumLines(pose, scale = 0.1, color = 0xff0000) {
+            const w = scale * 0.5;
+            const h = scale * 0.375;
+            const d = scale * 0.7;
+            
+            // Frustum vertices in camera space (looking down -Z axis)
+            const vertices = [
+                new THREE.Vector3(0, 0, 0),       // camera center
+                new THREE.Vector3(-w, -h, -d),    // bottom-left
+                new THREE.Vector3(w, -h, -d),     // bottom-right
+                new THREE.Vector3(w, h, -d),      // top-right
+                new THREE.Vector3(-w, h, -d),     // top-left
+            ];
+            
+            // Transform vertices by pose
+            vertices.forEach(v => v.applyMatrix4(pose));
+            
+            // Define edges
+            const edges = [
+                [0, 1], [0, 2], [0, 3], [0, 4],  // rays from center
+                [1, 2], [2, 3], [3, 4], [4, 1],  // image plane rectangle
+            ];
+            
+            const group = new THREE.Group();
+            const material = new THREE.LineBasicMaterial({ color: color });
+            
+            for (const [i, j] of edges) {
+                const geometry = new THREE.BufferGeometry().setFromPoints([vertices[i], vertices[j]]);
+                const line = new THREE.Line(geometry, material);
+                group.add(line);
+            }
+            
+            return group;
+        }
+
+        // Create frustum visualization from poses
+        function createFrustumVisualization(poses, scale = 0.1, color = 0xff0000, stride = 2) {
+            const group = new THREE.Group();
+            
+            for (let i = 0; i < poses.length; i += stride) {
+                const frustum = createFrustumLines(poses[i], scale, color);
+                group.add(frustum);
+            }
+            
+            return group;
+        }
+
+        // Create line trajectory from poses
+        function createLineTrajectory(poses, color = 0xff0000, stride = 1) {
+            const group = new THREE.Group();
+            
+            // Extract positions from poses
+            const points = [];
+            for (let i = 0; i < poses.length; i += stride) {
+                const position = new THREE.Vector3();
+                position.setFromMatrixPosition(poses[i]);
+                points.push(position);
+            }
+            
+            if (points.length < 2) return group;
+            
+            // Create line
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+            const line = new THREE.Line(geometry, material);
+            group.add(line);
+            
+            return group;
+        }
+
+        // Create trajectory visualization based on mode
+        function createTrajectoryFromPoses(poses, scale = 0.1, color = 0xff0000, stride = 2, mode = 'frustum') {
+            if (mode === 'trajectory') {
+                return createLineTrajectory(poses, color, 1);
+            } else {
+                return createFrustumVisualization(poses, scale, color, stride);
+            }
+        }
 
         function createViewer(config) {
             const container = document.getElementById(config.containerId);
@@ -216,9 +639,14 @@
             directionalLight2.position.set(-5, -10, -7.5);
             scene.add(directionalLight2);
 
-            // Grid helper
-            const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
-            scene.add(gridHelper);
+            // Store model center for pose alignment
+            let modelCenter = new THREE.Vector3();
+            
+            // Track active methods, their pose groups, and raw pose data
+            const activeMethods = new Map(); // method -> { group: THREE.Group, poses: Array }
+            
+            // Current visualization mode
+            let vizMode = 'frustum';
 
             // Load model
             const loader = new GLTFLoader();
@@ -226,6 +654,10 @@
                 config.modelPath,
                 (gltf) => {
                     const model = gltf.scene;
+                    
+                    // Rotate 90 degrees around the X axis
+                    model.rotation.x = -Math.PI / 2;
+                    
                     scene.add(model);
 
                     // Center and scale model
@@ -233,17 +665,29 @@
                     const center = box.getCenter(new THREE.Vector3());
                     const size = box.getSize(new THREE.Vector3());
 
+                    // Store center for pose alignment
+                    modelCenter.copy(center);
+
                     // Center the model
                     model.position.sub(center);
 
                     // Adjust camera to fit model
                     const maxDim = Math.max(size.x, size.y, size.z);
                     const fov = camera.fov * (Math.PI / 180);
-                    let cameraZ = Math.abs(maxDim / Math.sin(fov / 2)) * 1.5;
+                    let cameraDist = Math.abs(maxDim / Math.sin(fov / 2)) * config.zoomFactor;
                     
-                    camera.position.set(cameraZ, cameraZ * 0.7, cameraZ);
-                    camera.lookAt(0, 0, 0);
-                    controls.target.set(0, 0, 0);
+                    // Apply camera angle multipliers
+                    const angle = config.cameraAngle;
+                    camera.position.set(
+                        cameraDist * angle.x,
+                        cameraDist * angle.y,
+                        cameraDist * angle.z
+                    );
+                    
+                    // Set look-at target
+                    const target = config.lookAt;
+                    camera.lookAt(target.x, target.y, target.z);
+                    controls.target.set(target.x, target.y, target.z);
                     controls.update();
                 },
                 (xhr) => {
@@ -253,6 +697,171 @@
                     console.error(`Error loading model for ${config.containerId}:`, error);
                 }
             );
+
+            // Update legend
+            function updateLegend() {
+                const legendEl = document.getElementById(`legend-${config.containerId}`);
+                if (!legendEl) return;
+                
+                // Only show active methods
+                let html = '';
+                for (const method of activeMethods.keys()) {
+                    const colorInfo = methodColors[method];
+                    html += `
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: ${colorInfo.hex};"></div>
+                            <span class="legend-label">${colorInfo.name}</span>
+                        </div>
+                    `;
+                }
+                
+                legendEl.innerHTML = html;
+            }
+
+            // Function to create and add a pose group to the scene
+            function addPoseGroupToScene(method, poses) {
+                const color = methodColors[method].three;
+                const posesGroup = createTrajectoryFromPoses(poses, 0.2, color, 2, vizMode);
+                
+                // Apply the same transforms as the model
+                posesGroup.rotation.x = -Math.PI / 2;
+                posesGroup.position.sub(modelCenter);
+                
+                scene.add(posesGroup);
+                return posesGroup;
+            }
+
+            // Function to toggle a method's poses
+            async function toggleMethod(method) {
+                if (activeMethods.has(method)) {
+                    // Remove this method
+                    const { group } = activeMethods.get(method);
+                    scene.remove(group);
+                    activeMethods.delete(method);
+                    updateLegend();
+                    return false; // Now inactive
+                }
+                
+                // Load and add this method
+                const posePath = `static/poses/${config.posesFolder}/${method}.txt`;
+                
+                try {
+                    const response = await fetch(posePath);
+                    if (!response.ok) {
+                        console.error(`Failed to load poses: ${posePath}`);
+                        return false;
+                    }
+                    
+                    const text = await response.text();
+                    const poses = parseTUMPoses(text);
+                    
+                    if (poses.length === 0) {
+                        console.warn(`No poses found in ${posePath}`);
+                        return false;
+                    }
+                    
+                    // Create trajectory visualization
+                    const posesGroup = addPoseGroupToScene(method, poses);
+                    
+                    // Store both the group and the raw poses for mode switching
+                    activeMethods.set(method, { group: posesGroup, poses: poses });
+                    updateLegend();
+                    
+                    console.log(`Loaded ${poses.length} poses from ${method}`);
+                    return true; // Now active
+                    
+                } catch (error) {
+                    console.error(`Error loading poses for ${method}:`, error);
+                    return false;
+                }
+            }
+
+            // Function to switch visualization mode and re-render all active methods
+            function switchVisualizationMode(newMode) {
+                if (newMode === vizMode) return;
+                
+                vizMode = newMode;
+                
+                // Re-render all active methods with the new mode
+                for (const [method, data] of activeMethods.entries()) {
+                    // Remove old group
+                    scene.remove(data.group);
+                    
+                    // Create new group with new mode
+                    const newGroup = addPoseGroupToScene(method, data.poses);
+                    
+                    // Update stored group
+                    activeMethods.set(method, { group: newGroup, poses: data.poses });
+                }
+            }
+
+            // Setup visualization mode toggle
+            const vizModeContainer = document.getElementById(`vizmode-${config.containerId}`);
+            if (vizModeContainer) {
+                const modeButtons = vizModeContainer.querySelectorAll('.viz-mode-btn');
+                modeButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const mode = btn.dataset.mode;
+                        
+                        // Update button states
+                        modeButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        // Switch mode
+                        switchVisualizationMode(mode);
+                    });
+                });
+            }
+
+            // Setup method button event listeners
+            const buttonsContainer = document.getElementById(`buttons-${config.containerId}`);
+
+            // Function to clear all trajectories
+            function clearAll() {
+                for (const [method, data] of activeMethods.entries()) {
+                    scene.remove(data.group);
+                }
+                activeMethods.clear();
+                updateLegend();
+                
+                // Reset all method button styles
+                if (buttonsContainer) {
+                    const buttons = buttonsContainer.querySelectorAll('.method-btn[data-method]');
+                    buttons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = '';
+                        btn.style.borderColor = '';
+                    });
+                }
+            }
+            if (buttonsContainer) {
+                // Setup method toggle buttons
+                const buttons = buttonsContainer.querySelectorAll('.method-btn[data-method]');
+                buttons.forEach(btn => {
+                    const method = btn.dataset.method;
+                    const colorInfo = methodColors[method];
+                    
+                    btn.addEventListener('click', async () => {
+                        const isNowActive = await toggleMethod(method);
+                        
+                        if (isNowActive) {
+                            btn.classList.add('active');
+                            btn.style.backgroundColor = colorInfo.hex;
+                            btn.style.borderColor = colorInfo.hex;
+                        } else {
+                            btn.classList.remove('active');
+                            btn.style.backgroundColor = '';
+                            btn.style.borderColor = '';
+                        }
+                    });
+                });
+                
+                // Setup Clear All button
+                const clearAllBtn = buttonsContainer.querySelector('.clear-all-btn');
+                if (clearAllBtn) {
+                    clearAllBtn.addEventListener('click', clearAll);
+                }
+            }
 
             // Animation loop
             function animate() {
