@@ -269,6 +269,13 @@
             height: auto;
         }
         
+        .image-credit {
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            margin-top: 8px;
+        }
+        
         .figure-caption {
             font-size: 14px;
             color: #666;
@@ -715,6 +722,7 @@
         
         <div class="figure-section">
             <img src="static/figures/intro_figure.png" alt="SurfSLAM Overview Figure">
+            <p class="image-credit">Image courtesy of the National Oceanic and Atmospheric Administration Thunder Bay National Marine Sanctuary</p>
         </div>
         <div class="abstract-section">
             <h2>Abstract</h2>
@@ -732,6 +740,15 @@
             </div>
             <p class="approach-text">
                 We take as input measurements from a barometer, IMU, DVL, and a stereo image pair. We maintain an acoustic-inertial pose graph that preintegrates measurements to maintain a pose throughout operation. In parallel, we use our finetuned underwater stereo network to produce metric depth maps. These depth estimates and stereo images are used to perform geometric tracking to perform global registration, and reduce drift over operation, producing accurate trajectories and dense maps during operation.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>Results</h2>
+            <p>
+                We evaluate SurfSLAM on challenging real-world underwater data collected at the Thunder Bay National Marine Sanctuary. 
+                The dataset features diverse shipwreck survey sequences with varying environmental conditions, textures, and lighting. 
+                Below we present qualitative results for stereo depth estimation and SLAM trajectory tracking.
             </p>
         </div>
         
