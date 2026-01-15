@@ -20,7 +20,7 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -33,10 +33,23 @@
         }
         
         header h1 {
-            font-size: 36px;
             margin-bottom: 20px;
             color: #222;
             line-height: 1.3;
+        }
+        
+        .title-main {
+            display: block;
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .title-sub {
+            display: block;
+            font-size: 26px;
+            font-weight: 400;
+            color: #444;
         }
         
         .authors {
@@ -80,12 +93,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 120px;
+            margin-bottom: 25px;
         }
         
         .logos img {
-            height: 60px;
+            height: 40px;
             width: auto;
+        }
+        
+        .logos img[alt="FRoG Lab Logo"] {
+            height: 65px;
         }
         
         .abstract-section {
@@ -101,10 +119,20 @@
         
         .abstract-text {
             text-align: justify;
-            font-size: 16px;
-            line-height: 1.7;
+            font-size: 14px;
+            line-height: 1.6;
             color: #444;
-            max-width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .approach-text {
+            text-align: justify;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+            max-width: 900px;
+            margin: 0 auto 20px auto;
         }
         
         .figure-section {
@@ -125,6 +153,154 @@
             color: #666;
             margin-top: 15px;
             font-style: italic;
+        }
+        
+        /* Stereo comparison styles */
+        .stereo-section {
+            margin-bottom: 60px;
+        }
+        
+        .stereo-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .scene-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .scene-selector label {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .scene-selector select {
+            padding: 8px 15px;
+            font-size: 14px;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .stereo-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stereo-panel {
+            background: white;
+        }
+        
+        .stereo-panel:not(:last-child) {
+            border-right: 1px solid #333;
+        }
+        
+        .stereo-panel-header {
+            background: #007bff;
+            color: white;
+            padding: 8px 10px;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .stereo-panel-content {
+            background: #1a1a1a;
+        }
+        
+        .stereo-panel-content img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .method-selector-stereo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 8px 10px;
+            background: #0069d9;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .method-btn-stereo {
+            padding: 4px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .method-btn-stereo:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .method-btn-stereo.active {
+            background: white;
+            color: #007bff;
+            border-color: white;
+        }
+        
+        .stereo-input-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .stereo-input-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .stereo-hover-zones {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+        
+        .stereo-hover-zone {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .stereo-input-label {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 1000px) {
+            .stereo-comparison {
+                grid-template-columns: 1fr;
+            }
         }
         
         header p {
@@ -362,12 +538,19 @@
 <body>
     <div class="container">
         <header>
-            <h1>SurfSLAM: Sim-to-Real Underwater Stereo<br>Reconstruction For Real-Time SLAM</h1>
+            <h1>
+                <span class="title-main">SurfSLAM</span>
+                <span class="title-sub">Sim-to-Real Underwater Stereo Reconstruction For Real-Time SLAM</span>
+            </h1>
+            <!-- <div class="logos">
+                <img src="static/logo/frog-logo.svg" alt="FRoG Lab Logo">
+                <img src="static/logo/informal.png" alt="UM Robotics Logo">
+            </div> -->
             <div class="authors">
                 <a href="https://www.obagoren.com/" class="author" target="_blank" rel="noopener">Onur Bagoren<sup>*</sup></a>
                 <a href="https://sethgi.me/" class="author" target="_blank" rel="noopener">Seth Isaacson<sup>*</sup></a>
                 <a href="https://github.com/sacchinbhg" class="author" target="_blank" rel="noopener">Sacchin Sundar</a>
-                <a href="#" class="author" target="_blank" rel="noopener">Yung-Ching Sun</a>
+                <a href="https://ycsun2113.github.io/" class="author" target="_blank" rel="noopener">Yung-Ching Sun</a>
                 <a href="https://anja-sheppard.github.io/" class="author" target="_blank" rel="noopener">Anja Sheppard</a>
                 <div class="author-break"></div>
                 <a href="https://haoyuma2002814.github.io/" class="author" target="_blank" rel="noopener">Haoyu Ma</a>
@@ -376,12 +559,11 @@
                 <a href="https://fieldrobotics.engin.umich.edu/team" class="author" target="_blank" rel="noopener">Katherine A. Skinner</a> 
             </div>
             <p class="equal-contrib">* Equal contribution</p>
-            <div class="logos">
-                <img src="static/logo/frog-logo.svg" alt="FRoG Lab Logo">
-                <img src="static/logo/informal.png" alt="UM Robotics Logo">
-            </div>
         </header>
         
+        <div class="figure-section">
+            <img src="static/figures/Fig1_V2.png" alt="SurfSLAM Overview Figure">
+        </div>
         <div class="abstract-section">
             <h2>Abstract</h2>
             <p class="abstract-text">
@@ -390,12 +572,83 @@
             </p>
         </div>
         
-        <div class="figure-section">
-            <img src="static/figures/Fig1_V2.png" alt="SurfSLAM Overview Figure">
-        </div>
         
         <div class="section">
-            <h2>SLAM Results</h2>
+            <h2>Approach</h2>
+            <div class="figure-section">
+                <img src="static/figures/method_figure_final.png" alt="SurfSLAM Method Overview">
+            </div>
+            <p class="approach-text">
+                We take as input measurements from a barometer, IMU, DVL, and a stereo image pair. We maintain an acoustic-inertial pose graph that preintegrates measurements to maintain a pose throughout operation. In parallel, we use our finetuned underwater stereo network to produce metric depth maps. These depth estimates and stereo images are used to perform geometric tracking to perform global registration, and reduce drift over operation, producing accurate trajectories and dense maps during operation.
+            </p>
+        </div>
+        
+        <div class="stereo-section">
+            <h2>Stereo Depth Estimation Results</h2>
+            <p>
+                Compare disparity predictions from different stereo depth estimation methods. 
+                Select a scene and click on method buttons to view their predictions alongside the ground truth.
+            </p>
+            
+            <div class="stereo-controls">
+                <div class="scene-selector">
+                    <label for="scene-select">Scene:</label>
+                    <select id="scene-select">
+                        <option value="bissel">Bissel</option>
+                        <option value="engine">Engine</option>
+                        <option value="montana">Montana</option>
+                        <option value="long">Long</option>
+                        <option value="ribs">Ribs</option>
+                        <option value="wilson">Wilson</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="method-selector-stereo" id="stereo-method-buttons">
+                <span style="color: white; font-size: 11px; margin-right: 5px;">Method:</span>
+                <button class="method-btn-stereo active" data-method="ours_vitl">Ours (ViT-L)</button>
+                <button class="method-btn-stereo" data-method="ours_vits">Ours (ViT-S)</button>
+                <button class="method-btn-stereo" data-method="fs_vitl">FoundationStereo (ViT-L)</button>
+                <button class="method-btn-stereo" data-method="fs_vits">FoundationStereo (ViT-S)</button>
+                <button class="method-btn-stereo" data-method="defom_vitl">DEFoM (ViT-L)</button>
+                <button class="method-btn-stereo" data-method="defom_vits">DEFoM (ViT-S)</button>
+                <button class="method-btn-stereo" data-method="igevpp">IGEV++</button>
+                <button class="method-btn-stereo" data-method="uw_stereo">UW-Stereo</button>
+            </div>
+            
+            <div class="stereo-comparison">
+                <div class="stereo-panel">
+                    <div class="stereo-panel-header">Stereo Input</div>
+                    <div class="stereo-panel-content">
+                        <div class="stereo-input-container">
+                            <img id="stereo-input-img" src="static/stereo/bissel/left_rect.png" alt="Stereo Input">
+                            <div class="stereo-hover-zones">
+                                <div class="stereo-hover-zone" id="hover-left"></div>
+                                <div class="stereo-hover-zone" id="hover-right"></div>
+                            </div>
+                            <div class="stereo-input-label" id="stereo-input-label">Left Image</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stereo-panel">
+                    <div class="stereo-panel-header">Ground Truth</div>
+                    <div class="stereo-panel-content">
+                        <img id="stereo-gt-img" src="static/stereo/bissel/gt.png" alt="Ground Truth Disparity">
+                    </div>
+                </div>
+                
+                <div class="stereo-panel">
+                    <div class="stereo-panel-header" id="stereo-method-label">Ours (ViT-L)</div>
+                    <div class="stereo-panel-content">
+                        <img id="stereo-pred-img" src="static/stereo/bissel/ours_vitl.png" alt="Predicted Disparity">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>SLAM Tracking Results</h2>
             <p>
                 Below is an interactive viewer of the SLAM trajectory estimates of our method comapred against baseline methods. 
                 In addition, we visualize the ground truth trajectory and reconstructed point cloud meshes.
@@ -511,8 +764,8 @@
                 containerId: 'viewer1',
                 modelPath: 'static/models/boiler.glb',
                 posesFolder: 'boiler',
-                zoomFactor: 0.4,
-                cameraAngle: { x: -0.9, y: 0.3, z: 0.5 },
+                zoomFactor: 0.5,
+                cameraAngle: { x: -0.9, y: 0.4, z: 0.7 },
                 lookAt: { x: 0, y: 0, z: 0 }
             },
             {
@@ -527,7 +780,7 @@
                 containerId: 'viewer3',
                 modelPath: 'static/models/start.glb',
                 posesFolder: 'start',
-                zoomFactor: 0.2,
+                zoomFactor: 0.40,
                 cameraAngle: { x: 0.9, y: 0.7, z: 0.2 },
                 lookAt: { x: 0, y: 0, z: 0 }
             }
@@ -620,7 +873,7 @@
             return group;
         }
 
-        // Create line trajectory from poses
+        // Create line trajectory from poses with start/end markers
         function createLineTrajectory(poses, color = 0xff0000, stride = 1) {
             const group = new THREE.Group();
             
@@ -639,6 +892,37 @@
             const material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
             const line = new THREE.Line(geometry, material);
             group.add(line);
+            
+            // Add start marker (circle/sphere)
+            const startPos = points[0];
+            const sphereGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: color });
+            const startMarker = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            startMarker.position.copy(startPos);
+            group.add(startMarker);
+            
+            // Add end marker (X shape)
+            const endPos = points[points.length - 1];
+            const xSize = 0.15;
+            const xMaterial = new THREE.LineBasicMaterial({ color: color, linewidth: 3 });
+            
+            // First diagonal of X
+            const x1Points = [
+                new THREE.Vector3(endPos.x - xSize, endPos.y - xSize, endPos.z),
+                new THREE.Vector3(endPos.x + xSize, endPos.y + xSize, endPos.z)
+            ];
+            const x1Geometry = new THREE.BufferGeometry().setFromPoints(x1Points);
+            const x1Line = new THREE.Line(x1Geometry, xMaterial);
+            group.add(x1Line);
+            
+            // Second diagonal of X
+            const x2Points = [
+                new THREE.Vector3(endPos.x - xSize, endPos.y + xSize, endPos.z),
+                new THREE.Vector3(endPos.x + xSize, endPos.y - xSize, endPos.z)
+            ];
+            const x2Geometry = new THREE.BufferGeometry().setFromPoints(x2Points);
+            const x2Line = new THREE.Line(x2Geometry, xMaterial);
+            group.add(x2Line);
             
             return group;
         }
@@ -966,6 +1250,90 @@
                 viewerInstances.forEach(instance => instance.resize());
             }, 100);
         });
+
+        // Stereo comparison functionality
+        (function() {
+            const sceneSelect = document.getElementById('scene-select');
+            const inputImg = document.getElementById('stereo-input-img');
+            const inputLabel = document.getElementById('stereo-input-label');
+            const hoverLeft = document.getElementById('hover-left');
+            const hoverRight = document.getElementById('hover-right');
+            const gtImg = document.getElementById('stereo-gt-img');
+            const predImg = document.getElementById('stereo-pred-img');
+            const methodLabel = document.getElementById('stereo-method-label');
+            const methodButtons = document.querySelectorAll('.method-btn-stereo');
+            
+            let currentScene = 'bissel';
+            let currentMethod = 'ours_vitl';
+            let currentMethodName = 'Ours (ViT-L)';
+            let currentStereoSide = 'left';
+            
+            function updateStereoInput() {
+                const filename = currentStereoSide === 'left' ? 'left_rect.png' : 'right_rect.png';
+                inputImg.src = `static/stereo/${currentScene}/${filename}`;
+                inputLabel.textContent = currentStereoSide === 'left' ? 'Left Image' : 'Right Image';
+            }
+            
+            function updateImages() {
+                // Update stereo input
+                updateStereoInput();
+                
+                // Update GT image
+                const gtPath = `static/stereo/${currentScene}/gt.png`;
+                gtImg.src = gtPath;
+                gtImg.onerror = () => {
+                    gtImg.alt = 'GT not available for this scene';
+                    gtImg.style.opacity = '0.3';
+                };
+                gtImg.onload = () => {
+                    gtImg.style.opacity = '1';
+                };
+                
+                // Update prediction image
+                const predPath = `static/stereo/${currentScene}/${currentMethod}.png`;
+                predImg.src = predPath;
+                predImg.onerror = () => {
+                    predImg.alt = 'Method not available for this scene';
+                    predImg.style.opacity = '0.3';
+                };
+                predImg.onload = () => {
+                    predImg.style.opacity = '1';
+                };
+                
+                // Update method label
+                methodLabel.textContent = currentMethodName;
+            }
+            
+            // Hover zones for stereo input
+            hoverLeft.addEventListener('mouseenter', () => {
+                currentStereoSide = 'left';
+                updateStereoInput();
+            });
+            
+            hoverRight.addEventListener('mouseenter', () => {
+                currentStereoSide = 'right';
+                updateStereoInput();
+            });
+            
+            // Scene selector
+            sceneSelect.addEventListener('change', (e) => {
+                currentScene = e.target.value;
+                updateImages();
+            });
+            
+            // Method buttons
+            methodButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    methodButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    currentMethod = btn.dataset.method;
+                    currentMethodName = btn.textContent;
+                    updateImages();
+                });
+            });
+        })();
     </script>
 </body>
 </html>
