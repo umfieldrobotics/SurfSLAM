@@ -174,6 +174,49 @@
             text-align: center;
             font-weight: bold;
             font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .fullscreen-btn img {
+            width: 20px;
+            height: 20px;
+            filter: brightness(0) invert(1);
+        }
+        
+        /* Fullscreen styles */
+        .viewer-container:fullscreen,
+        .viewer-container:-webkit-full-screen {
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .viewer-container:fullscreen .viewer-canvas,
+        .viewer-container:-webkit-full-screen .viewer-canvas {
+            flex: 1;
+            height: auto;
         }
         
         .viz-mode-toggle {
@@ -359,8 +402,11 @@
             </p>
             
             <div class="viewer-grid">
-                <div class="viewer-container full-width">
-                    <div class="viewer-header">Long</div>
+                <div class="viewer-container full-width" id="container-viewer2">
+                    <div class="viewer-header">
+                        Long
+                        <button class="fullscreen-btn" data-container="container-viewer2"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                    </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer2">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
                         <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
@@ -381,8 +427,11 @@
                     </div>
                 </div>
                 
-                <div class="viewer-container">
-                    <div class="viewer-header">Boiler</div>
+                <div class="viewer-container" id="container-viewer1">
+                    <div class="viewer-header">
+                        Boiler
+                        <button class="fullscreen-btn" data-container="container-viewer1"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                    </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer1">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
                         <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
@@ -403,8 +452,11 @@
                     </div>
                 </div>
                 
-                <div class="viewer-container">
-                    <div class="viewer-header">Engine</div>
+                <div class="viewer-container" id="container-viewer3">
+                    <div class="viewer-header">
+                        Engine
+                        <button class="fullscreen-btn" data-container="container-viewer3"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                    </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer3">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
                         <button class="viz-mode-btn" data-mode="trajectory">Trajectory</button>
@@ -889,6 +941,30 @@
         // Handle window resize
         window.addEventListener('resize', () => {
             viewerInstances.forEach(instance => instance.resize());
+        });
+
+        // Fullscreen functionality
+        document.querySelectorAll('.fullscreen-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const containerId = btn.dataset.container;
+                const container = document.getElementById(containerId);
+                
+                if (!document.fullscreenElement) {
+                    container.requestFullscreen().catch(err => {
+                        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        });
+
+        // Handle fullscreen change to resize viewers
+        document.addEventListener('fullscreenchange', () => {
+            // Small delay to let fullscreen transition complete
+            setTimeout(() => {
+                viewerInstances.forEach(instance => instance.resize());
+            }, 100);
         });
     </script>
 </body>
