@@ -89,6 +89,76 @@
             margin-bottom: 20px;
         }
         
+        /* Dropdown menu */
+        .dropdown-menu {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .dropdown-trigger {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+        }
+        
+        .dropdown-trigger:hover,
+        .dropdown-menu.open .dropdown-trigger {
+            background: #0056b3;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        
+        .dropdown-menu.open .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.15s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-content a:hover {
+            background: #007bff;
+            color: white;
+            padding-left: 20px;
+        }
+        
         .logos {
             display: flex;
             justify-content: center;
@@ -356,28 +426,36 @@
             position: relative;
         }
         
-        .fullscreen-btn {
+        .viewer-header-btns {
             position: absolute;
             right: 10px;
+            display: flex;
+            gap: 6px;
+        }
+        
+        .viewer-btn {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 5px;
+            padding: 5px 8px;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
         }
         
-        .fullscreen-btn:hover {
+        .viewer-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.6);
         }
         
-        .fullscreen-btn img {
-            width: 20px;
-            height: 20px;
+        .viewer-btn img {
+            width: 18px;
+            height: 18px;
             filter: brightness(0) invert(1);
         }
         
@@ -536,6 +614,15 @@
     </style>
 </head>
 <body>
+    <div class="dropdown-menu">
+        <button class="dropdown-trigger">Other Research ▾</button>
+        <div class="dropdown-content">
+            <a href="https://umfieldrobotics.github.io/TURTLMap/" target="_blank" rel="noopener">🐢 TURTLMap</a>
+            <a href="https://umfieldrobotics.github.io/OceanSim/" target="_blank" rel="noopener">🌊 OceanSim</a>
+            <a href="https://fieldrobotics.engin.umich.edu/research" target="_blank" rel="noopener">🐸 FRoG Research</a>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <h1>
@@ -594,12 +681,12 @@
                 <div class="scene-selector">
                     <label for="scene-select">Scene:</label>
                     <select id="scene-select">
-                        <option value="bissel">Bissel</option>
-                        <option value="engine">Engine</option>
-                        <option value="montana">Montana</option>
-                        <option value="long">Long</option>
+                        <option value="bissel">Mossy Wreck</option>
+                        <option value="engine">Engine 1</option>
+                        <option value="montana">Engine 2</option>
+                        <option value="long">Engine 3</option>
                         <option value="ribs">Ribs</option>
-                        <option value="wilson">Wilson</option>
+                        <option value="wilson">Shaft</option>
                     </select>
                 </div>
             </div>
@@ -652,13 +739,17 @@
             <p>
                 Below is an interactive viewer of the SLAM trajectory estimates of our method comapred against baseline methods. 
                 In addition, we visualize the ground truth trajectory and reconstructed point cloud meshes.
+                Select multiple methods to compare their trajectories.
             </p>
             
             <div class="viewer-grid">
                 <div class="viewer-container full-width" id="container-viewer2">
                     <div class="viewer-header">
                         Long
-                        <button class="fullscreen-btn" data-container="container-viewer2"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        <div class="viewer-header-btns">
+                            <button class="viewer-btn reset-btn" data-viewer="viewer2">Reset View</button>
+                            <button class="viewer-btn fullscreen-btn" data-container="container-viewer2"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        </div>
                     </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer2">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
@@ -683,7 +774,10 @@
                 <div class="viewer-container" id="container-viewer1">
                     <div class="viewer-header">
                         Boiler
-                        <button class="fullscreen-btn" data-container="container-viewer1"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        <div class="viewer-header-btns">
+                            <button class="viewer-btn reset-btn" data-viewer="viewer1">Reset View</button>
+                            <button class="viewer-btn fullscreen-btn" data-container="container-viewer1"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        </div>
                     </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer1">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
@@ -708,7 +802,10 @@
                 <div class="viewer-container" id="container-viewer3">
                     <div class="viewer-header">
                         Engine
-                        <button class="fullscreen-btn" data-container="container-viewer3"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        <div class="viewer-header-btns">
+                            <button class="viewer-btn reset-btn" data-viewer="viewer3">Reset View</button>
+                            <button class="viewer-btn fullscreen-btn" data-container="container-viewer3"><img src="static/figures/fullscreen.png" alt="Fullscreen"></button>
+                        </div>
                     </div>
                     <div class="viz-mode-toggle" id="vizmode-viewer3">
                         <button class="viz-mode-btn active" data-mode="frustum">Camera Frustum</button>
@@ -959,6 +1056,10 @@
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
+            
+            // Store initial camera state for reset
+            const initialCameraPosition = new THREE.Vector3();
+            const initialCameraTarget = new THREE.Vector3();
             controls.screenSpacePanning = false;
             controls.minDistance = 0.1;
             controls.maxDistance = 500;
@@ -1025,6 +1126,10 @@
                     camera.lookAt(target.x, target.y, target.z);
                     controls.target.set(target.x, target.y, target.z);
                     controls.update();
+                    
+                    // Store initial camera state for reset
+                    initialCameraPosition.copy(camera.position);
+                    initialCameraTarget.copy(controls.target);
                 },
                 (xhr) => {
                     console.log(`${config.containerId}: ${(xhr.loaded / xhr.total * 100)}% loaded`);
@@ -1215,7 +1320,13 @@
                     camera.aspect = width / height;
                     camera.updateProjectionMatrix();
                     renderer.setSize(width, height);
-                }
+                },
+                resetView: () => {
+                    camera.position.copy(initialCameraPosition);
+                    controls.target.copy(initialCameraTarget);
+                    controls.update();
+                },
+                containerId: config.containerId
             };
         }
 
@@ -1249,6 +1360,17 @@
             setTimeout(() => {
                 viewerInstances.forEach(instance => instance.resize());
             }, 100);
+        });
+
+        // Reset view functionality
+        document.querySelectorAll('.reset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const viewerId = btn.dataset.viewer;
+                const instance = viewerInstances.find(v => v.containerId === viewerId);
+                if (instance) {
+                    instance.resetView();
+                }
+            });
         });
 
         // Stereo comparison functionality
@@ -1333,6 +1455,33 @@
                     updateImages();
                 });
             });
+        })();
+
+        // Dropdown menu functionality
+        (function() {
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const dropdownTrigger = document.querySelector('.dropdown-trigger');
+            
+            if (dropdownTrigger && dropdownMenu) {
+                dropdownTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('open');
+                });
+                
+                // Close when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!dropdownMenu.contains(e.target)) {
+                        dropdownMenu.classList.remove('open');
+                    }
+                });
+                
+                // Close when pressing Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        dropdownMenu.classList.remove('open');
+                    }
+                });
+            }
         })();
     </script>
 </body>
