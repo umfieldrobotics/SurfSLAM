@@ -368,6 +368,46 @@
             gap: 20px;
         }
         
+        .suds-view-toggle {
+            display: flex;
+            gap: 0;
+        }
+        
+        .suds-view-toggle-btn {
+            padding: 3px 8px;
+            background: #444;
+            border: none;
+            color: #aaa;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .suds-view-toggle-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .suds-view-toggle-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .suds-view-toggle-btn.active {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .suds-right-content {
+            position: relative;
+        }
+        
+        .suds-right-view {
+            display: none;
+        }
+        
+        .suds-right-view.active {
+            display: block;
+        }
+        
         .suds-panel {
             background: #1a1a1a;
             border-radius: 8px;
@@ -383,6 +423,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            min-height: 48px;
+            box-sizing: border-box;
         }
         
         .suds-fullscreen-btn {
@@ -487,6 +529,173 @@
             margin-top: 15px;
             color: #666;
             font-size: 14px;
+        }
+        
+        /* UWSim Section Styles */
+        .uwsim-section {
+            margin-bottom: 60px;
+        }
+        
+        .uwsim-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 20px;
+        }
+        
+        .uwsim-tab {
+            padding: 10px 20px;
+            background: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .uwsim-tab:first-child {
+            border-radius: 6px 0 0 6px;
+        }
+        
+        .uwsim-tab:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .uwsim-tab.active {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .uwsim-tab:hover:not(.active) {
+            background: #d0d0d0;
+        }
+        
+        .uwsim-scene-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .uwsim-scene-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .uwsim-scene-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        .uwsim-scene-btn:hover:not(.active) {
+            background: #e8e8e8;
+        }
+        
+        .uwsim-comparison {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #1a1a1a;
+            user-select: none;
+        }
+        
+        .uwsim-comparison-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .uwsim-img-real {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .uwsim-img-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            clip-path: inset(0 50% 0 0);
+        }
+        
+        .uwsim-img-overlay img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .uwsim-slider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: white;
+            cursor: ew-resize;
+            z-index: 10;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .uwsim-slider-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            cursor: ew-resize;
+            z-index: 11;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .uwsim-slider-handle::before,
+        .uwsim-slider-handle::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        
+        .uwsim-slider-handle::before {
+            border-width: 6px 8px 6px 0;
+            border-color: transparent #666 transparent transparent;
+            left: 8px;
+        }
+        
+        .uwsim-slider-handle::after {
+            border-width: 6px 0 6px 8px;
+            border-color: transparent transparent transparent #666;
+            right: 8px;
+        }
+        
+        .uwsim-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: #2a2a2a;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .uwsim-label {
+            font-weight: 500;
         }
         
         .suds-gif-container {
@@ -1036,26 +1245,39 @@
                     <button class="suds-sequence-btn" data-sequence="engine_1">Engine 1</button>
                     <button class="suds-sequence-btn" data-sequence="engine_2">Engine 2</button>
                     <button class="suds-sequence-btn" data-sequence="engine_3">Engine 3</button>
+                    <button class="suds-sequence-btn" data-sequence="engine_4">Engine 4</button>
                     <button class="suds-sequence-btn" data-sequence="propeller">Propeller</button>
                 </div>
                 
                 <div class="suds-viewer-container">
                     <div class="suds-panel">
-                        <div class="suds-panel-header">Stereo Sequence</div>
+                        <div class="suds-panel-header">RGB Sequence</div>
                         <div class="suds-gif-container">
-                            <img id="suds-gif" class="suds-gif-img" src="static/dataset/gifs/boiler.gif" alt="Stereo sequence">
+                            <img id="suds-rgb-gif" class="suds-gif-img" src="static/dataset/rgb_gifs/boiler_rgb.gif" alt="RGB sequence">
                             <img src="static/logo/frog-logo.svg" alt="" class="watermark">
                         </div>
                     </div>
                     <div class="suds-panel" id="suds-mesh-panel">
                         <div class="suds-panel-header">
-                            <span>3D Reconstruction</span>
+                            <div class="suds-view-toggle">
+                                <button class="suds-view-toggle-btn" data-view="mesh">3D Mesh</button>
+                                <button class="suds-view-toggle-btn active" data-view="disp">Disparity</button>
+                            </div>
                             <button class="suds-fullscreen-btn" id="suds-fullscreen-btn">
                                 <img src="static/figures/fullscreen.png" alt="Fullscreen">
                             </button>
                         </div>
-                        <div class="suds-mesh-container" id="suds-mesh-container">
-                            <canvas id="suds-mesh-canvas" class="suds-mesh-canvas"></canvas>
+                        <div class="suds-right-content">
+                            <div class="suds-right-view" id="suds-mesh-view">
+                                <div class="suds-mesh-container" id="suds-mesh-container">
+                                    <canvas id="suds-mesh-canvas" class="suds-mesh-canvas"></canvas>
+                                </div>
+                            </div>
+                            <div class="suds-right-view active" id="suds-disp-view">
+                                <div class="suds-gif-container">
+                                    <img id="suds-disp-gif" class="suds-gif-img" src="static/dataset/disp_gifs/boiler_disp.gif" alt="Disparity sequence">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1090,6 +1312,42 @@
                 </div>
                 
                 <div class="training-counter" id="training-counter">1 / 6</div>
+            </div>
+        </div>
+        
+        <div class="uwsim-section">
+            <h2>Underwater Simulation Dataset (UWSim)</h2>
+            <p>
+                We use simulated underwater data with various augmentations for training. Drag the slider to compare the various augmented images with real underwater footage.
+            </p>
+            
+            <div class="uwsim-scene-selector">
+                <button class="uwsim-scene-btn active" data-scene="rock">Rock</button>
+                <button class="uwsim-scene-btn" data-scene="ribs">Shipwreck</button>
+                <button class="uwsim-scene-btn" data-scene="boiler">Boiler</button>
+            </div>
+            
+            <div class="uwsim-tabs">
+                <button class="uwsim-tab active" data-aug="sim">Sim</button>
+                <button class="uwsim-tab" data-aug="haze">+ Haze</button>
+                <button class="uwsim-tab" data-aug="caustics">+ Caustics</button>
+                <button class="uwsim-tab" data-aug="light">+ Light</button>
+                <button class="uwsim-tab" data-aug="particle">+ Particles</button>
+            </div>
+            
+            <div class="uwsim-comparison" id="uwsim-comparison">
+                <div class="uwsim-labels">
+                    <span class="uwsim-label" id="uwsim-aug-label">Sim</span>
+                    <span class="uwsim-label">Real</span>
+                </div>
+                <div class="uwsim-comparison-container" id="uwsim-container">
+                    <img class="uwsim-img-real" id="uwsim-real" src="static/uw_sim/real_rock.svg" alt="Real underwater image">
+                    <div class="uwsim-img-overlay" id="uwsim-overlay">
+                        <img id="uwsim-aug" src="static/uw_sim/sim_rock.svg" alt="Augmented image">
+                    </div>
+                    <div class="uwsim-slider-line" id="uwsim-slider-line"></div>
+                    <div class="uwsim-slider-handle" id="uwsim-slider-handle"></div>
+                </div>
             </div>
         </div>
         
@@ -1811,7 +2069,8 @@
             const sudsTabBtns = document.querySelectorAll('.suds-tab');
             const sudsTabContents = document.querySelectorAll('.suds-tab-content');
             const sudsSequenceBtns = document.querySelectorAll('.suds-sequence-btn');
-            const sudsGif = document.getElementById('suds-gif');
+            const sudsRgbGif = document.getElementById('suds-rgb-gif');
+            const sudsDispGif = document.getElementById('suds-disp-gif');
             const sudsMeshCanvas = document.getElementById('suds-mesh-canvas');
             const sudsMeshContainer = document.getElementById('suds-mesh-container');
             
@@ -1859,6 +2118,11 @@
                     cameraPosition: { x: 3, y: 2, z: 0 },
                     lookAt: { x: 0, y: 0, z: 0 },
                     zoom: 1.5
+                },
+                engine_4: {
+                    cameraPosition: { x: 3, y: 2, z: 5 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 3.0
                 }
             };
             
@@ -1946,8 +2210,10 @@
             function updateSequence(sequence) {
                 currentSequence = sequence;
                 
-                // Update GIF
-                sudsGif.src = `static/dataset/gifs/${sequence}.gif`;
+                // Update GIFs (synchronized with cache-busting timestamp)
+                const timestamp = Date.now();
+                sudsRgbGif.src = `static/dataset/rgb_gifs/${sequence}_rgb.gif?t=${timestamp}`;
+                sudsDispGif.src = `static/dataset/disp_gifs/${sequence}_disp.gif?t=${timestamp}`;
                 
                 // Update mesh
                 loadSudsMesh(sequence);
@@ -1976,6 +2242,30 @@
             sudsSequenceBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     updateSequence(btn.dataset.sequence);
+                });
+            });
+            
+            // View toggle (3D Mesh / Disparity)
+            const viewToggleBtns = document.querySelectorAll('.suds-view-toggle-btn');
+            const meshView = document.getElementById('suds-mesh-view');
+            const dispView = document.getElementById('suds-disp-view');
+            
+            viewToggleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const view = btn.dataset.view;
+                    
+                    viewToggleBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    if (view === 'mesh') {
+                        meshView.classList.add('active');
+                        dispView.classList.remove('active');
+                        // Trigger resize to fix canvas
+                        setTimeout(handleResize, 50);
+                    } else {
+                        meshView.classList.remove('active');
+                        dispView.classList.add('active');
+                    }
                 });
             });
             
@@ -2186,6 +2476,116 @@
                     }
                 });
             }
+        })();
+        
+        // UWSim comparison functionality
+        (function() {
+            const uwsimTabs = document.querySelectorAll('.uwsim-tab');
+            const uwsimSceneBtns = document.querySelectorAll('.uwsim-scene-btn');
+            const uwsimContainer = document.getElementById('uwsim-container');
+            const uwsimOverlay = document.getElementById('uwsim-overlay');
+            const uwsimSliderLine = document.getElementById('uwsim-slider-line');
+            const uwsimSliderHandle = document.getElementById('uwsim-slider-handle');
+            const uwsimRealImg = document.getElementById('uwsim-real');
+            const uwsimAugImg = document.getElementById('uwsim-aug');
+            const uwsimAugLabel = document.getElementById('uwsim-aug-label');
+            
+            let currentScene = 'rock';
+            let currentAug = 'sim';
+            let isDragging = false;
+            
+            const augLabels = {
+                sim: 'Sim',
+                haze: '+ Haze',
+                caustics: '+ Caustics',
+                light: '+ Light',
+                particle: '+ Particles'
+            };
+            
+            // Scene configurations: extension and caustics naming
+            const sceneConfig = {
+                rock: { ext: 'svg', caustics: 'caustic' },
+                ribs: { ext: 'svg', caustics: 'caustics' },
+                boiler: { ext: 'svg', caustics: 'caustics' }
+            };
+            
+            function updateImages() {
+                const config = sceneConfig[currentScene];
+                const ext = config.ext;
+                
+                // Handle caustics naming difference
+                let augName = currentAug;
+                if (currentAug === 'caustics') {
+                    augName = config.caustics;
+                }
+                
+                uwsimRealImg.src = `static/uw_sim/real_${currentScene}.${ext}`;
+                uwsimAugImg.src = `static/uw_sim/${augName}_${currentScene}.${ext}`;
+                uwsimAugLabel.textContent = augLabels[currentAug];
+            }
+            
+            function setSliderPosition(x) {
+                const rect = uwsimContainer.getBoundingClientRect();
+                let percent = ((x - rect.left) / rect.width) * 100;
+                percent = Math.max(0, Math.min(100, percent));
+                
+                // Use clip-path for smooth clipping
+                uwsimOverlay.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+                uwsimSliderLine.style.left = percent + '%';
+                uwsimSliderHandle.style.left = percent + '%';
+            }
+            
+            // Tab switching
+            uwsimTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    uwsimTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentAug = tab.dataset.aug;
+                    updateImages();
+                });
+            });
+            
+            // Scene switching
+            uwsimSceneBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    uwsimSceneBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentScene = btn.dataset.scene;
+                    updateImages();
+                });
+            });
+            
+            // Slider interaction
+            uwsimContainer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                setSliderPosition(e.clientX);
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    setSliderPosition(e.clientX);
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Touch support
+            uwsimContainer.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                setSliderPosition(e.touches[0].clientX);
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    setSliderPosition(e.touches[0].clientX);
+                }
+            });
+            
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
         })();
         
         // Disable right-click context menu on the entire page
