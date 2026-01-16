@@ -247,6 +247,9 @@
             color: #444;
             max-width: 900px;
             margin: 0 auto;
+            background: #f0f0f0;
+            padding: 20px 25px;
+            border-radius: 8px;
         }
         
         .approach-text {
@@ -281,6 +284,249 @@
             color: #666;
             margin-top: 15px;
             font-style: italic;
+        }
+        
+        /* SUDS Dataset section styles */
+        .suds-section {
+            margin-bottom: 60px;
+        }
+        
+        .suds-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 20px;
+        }
+        
+        .suds-tab {
+            padding: 12px 30px;
+            background: #e0e0e0;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .suds-tab:first-child {
+            border-radius: 6px 0 0 6px;
+        }
+        
+        .suds-tab:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .suds-tab.active {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .suds-tab:hover:not(.active) {
+            background: #d0d0d0;
+        }
+        
+        .suds-tab-content {
+            display: none;
+        }
+        
+        .suds-tab-content.active {
+            display: block;
+        }
+        
+        .suds-sequence-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .suds-sequence-btn {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .suds-sequence-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        
+        .suds-sequence-btn:hover:not(.active) {
+            background: #e8e8e8;
+            border-color: #ccc;
+        }
+        
+        .suds-viewer-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .suds-panel {
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .suds-panel-header {
+            background: #2a2a2a;
+            padding: 10px 15px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .suds-fullscreen-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .suds-fullscreen-btn:hover {
+            opacity: 1;
+        }
+        
+        .suds-fullscreen-btn img {
+            width: 18px;
+            height: 18px;
+            filter: invert(1);
+        }
+        
+        #suds-mesh-panel:fullscreen {
+            background: #1a1a1a;
+        }
+        
+        #suds-mesh-panel:fullscreen .suds-mesh-container {
+            height: calc(100vh - 44px);
+            aspect-ratio: unset;
+        }
+        
+        /* Training gallery styles */
+        .training-gallery {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .gallery-nav {
+            background: #2196F3;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .gallery-nav:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+        
+        .training-stereo-viewer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 800px;
+        }
+        
+        .training-panel {
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .training-panel-header {
+            background: #2a2a2a;
+            padding: 8px 12px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .training-panel-content {
+            position: relative;
+            background: #000;
+        }
+        
+        .training-panel-content > img:not(.watermark) {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .training-panel-content .watermark {
+            top: 8px;
+            left: 8px;
+            width: 25px;
+            height: 25px;
+        }
+        
+        .training-counter {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .suds-gif-container {
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+        }
+        
+        .suds-gif-container img.suds-gif-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .suds-mesh-container {
+            aspect-ratio: 16 / 9;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .suds-mesh-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
         }
         
         /* Stereo comparison styles */
@@ -340,16 +586,36 @@
             font-weight: bold;
             font-size: 13px;
             text-align: center;
+            min-height: 54px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hover-hint {
+            font-weight: normal;
+            font-size: 8px;
+            opacity: 0.7;
+            margin-top: 2px;
         }
         
         .stereo-panel-content {
             background: #1a1a1a;
+            position: relative;
         }
         
-        .stereo-panel-content img {
+        .stereo-panel-content > img {
             width: 100%;
             height: auto;
             display: block;
+        }
+        
+        .stereo-panel-content .watermark {
+            top: 8px;
+            left: 8px;
+            width: 30px;
+            height: 30px;
         }
         
         .method-selector-stereo {
@@ -392,10 +658,17 @@
             height: 100%;
         }
         
-        .stereo-input-container img {
+        .stereo-input-container > img:not(.watermark) {
             width: 100%;
             height: auto;
             display: block;
+        }
+        
+        .stereo-input-container .watermark {
+            top: 8px;
+            left: 8px;
+            width: 30px;
+            height: 30px;
         }
         
         .stereo-hover-zones {
@@ -728,7 +1001,6 @@
             <h2>Abstract</h2>
             <p class="abstract-text">
                 Localization and mapping are core perceptual capabilities for underwater robots. Stereo cameras provide a low-cost means of directly estimating metric depth to support these tasks. However, despite recent advances in stereo depth estimation on land, computing depth from image pairs in underwater scenes remains challenging. In underwater environments, images are degraded by light attenuation, visual artifacts, and dynamic lighting conditions. Furthermore, real-world underwater scenes frequently lack rich texture useful for stereo depth estimation and 3D reconstruction. As a result, stereo estimation networks trained on in-air data cannot transfer directly to the underwater domain. In addition, there is a lack of real-world underwater stereo datasets for supervised training of neural networks. Poor underwater depth estimation is compounded in stereo-based Simultaneous Localization and Mapping (SLAM) algorithms, making it a fundamental challenge for underwater robot perception. To address these challenges, we propose a novel framework that enables sim-to-real training of underwater stereo disparity estimation networks using simulated data and self-supervised finetuning. We leverage our learned depth predictions to develop \algname, a novel framework for real-time underwater SLAM that fuses stereo cameras with IMU, barometric, and Doppler Velocity Log (DVL) measurements. Lastly, we collect a challenging real-world dataset of shipwreck surveys using an underwater robot. Our dataset features over 24,000 stereo pairs, along with high-quality, dense photogrammetry models and reference trajectories for evaluation. Through extensive experiments, we demonstrate the advantages of the proposed training approach on real-world data for improving stereo estimation in the underwater domain and for enabling accurate trajectory estimation and 3D reconstruction of complex shipwreck sites.
-                Upon publication, code, real-world underwater data, and simulated training data will be made publicly available.
             </p>
         </div>
         
@@ -741,6 +1013,84 @@
             <p class="approach-text">
                 We take as input measurements from a barometer, IMU, DVL, and a stereo image pair. We maintain an acoustic-inertial pose graph that preintegrates measurements to maintain a pose throughout operation. In parallel, we use our finetuned underwater stereo network to produce metric depth maps. These depth estimates and stereo images are used to perform geometric tracking to perform global registration, and reduce drift over operation, producing accurate trajectories and dense maps during operation.
             </p>
+        </div>
+        
+        <div class="suds-section">
+            <h2>Stereo Underwater Dataset for Shipwrecks (SUDS)</h2>
+            <p>
+                SUDS is a comprehensive stereo underwater dataset collected at the Thunder Bay National Marine Sanctuary. 
+                The dataset captures diverse shipwreck environments with challenging underwater conditions including varying visibility, lighting, and textures.
+            </p>
+            
+            <div class="suds-tabs">
+                <button class="suds-tab active" data-tab="evaluation">Evaluation Dataset</button>
+                <button class="suds-tab" data-tab="training">Training Dataset</button>
+            </div>
+            
+            <div id="suds-evaluation" class="suds-tab-content active">
+                <div class="suds-sequence-selector" id="suds-sequence-selector">
+                    <button class="suds-sequence-btn active" data-sequence="boiler">Boiler</button>
+                    <button class="suds-sequence-btn" data-sequence="mossy_wreck">Mossy Wreck</button>
+                    <button class="suds-sequence-btn" data-sequence="shaft">Shaft</button>
+                    <button class="suds-sequence-btn" data-sequence="ribs">Ribs</button>
+                    <button class="suds-sequence-btn" data-sequence="engine_1">Engine 1</button>
+                    <button class="suds-sequence-btn" data-sequence="engine_2">Engine 2</button>
+                    <button class="suds-sequence-btn" data-sequence="engine_3">Engine 3</button>
+                    <button class="suds-sequence-btn" data-sequence="propeller">Propeller</button>
+                </div>
+                
+                <div class="suds-viewer-container">
+                    <div class="suds-panel">
+                        <div class="suds-panel-header">Stereo Sequence</div>
+                        <div class="suds-gif-container">
+                            <img id="suds-gif" class="suds-gif-img" src="static/dataset/gifs/boiler.gif" alt="Stereo sequence">
+                            <img src="static/logo/frog-logo.svg" alt="" class="watermark">
+                        </div>
+                    </div>
+                    <div class="suds-panel" id="suds-mesh-panel">
+                        <div class="suds-panel-header">
+                            <span>3D Reconstruction</span>
+                            <button class="suds-fullscreen-btn" id="suds-fullscreen-btn">
+                                <img src="static/figures/fullscreen.png" alt="Fullscreen">
+                            </button>
+                        </div>
+                        <div class="suds-mesh-container" id="suds-mesh-container">
+                            <canvas id="suds-mesh-canvas" class="suds-mesh-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="suds-training" class="suds-tab-content">
+                <p style="text-align: center; margin-bottom: 20px; color: #666;">
+                    Sample stereo pairs from the SUDS training dataset. These images images were used for self-supervised training of our stereo depth estimation model. Use the arrows or keyboard to navigate.
+                </p>
+                
+                <div class="training-gallery">
+                    <button class="gallery-nav gallery-prev" id="training-prev">&#8249;</button>
+                    
+                    <div class="training-stereo-viewer">
+                        <div class="training-panel">
+                            <div class="training-panel-header">Left Image</div>
+                            <div class="training-panel-content">
+                                <img id="training-left-img" src="static/suds_training/left/1748993648696118000.png" alt="Left stereo image">
+                                <img src="static/logo/frog-logo.svg" alt="" class="watermark">
+                            </div>
+                        </div>
+                        <div class="training-panel">
+                            <div class="training-panel-header">Right Image</div>
+                            <div class="training-panel-content">
+                                <img id="training-right-img" src="static/suds_training/right/1748993648696118000.png" alt="Right stereo image">
+                                <img src="static/logo/frog-logo.svg" alt="" class="watermark">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="gallery-nav gallery-next" id="training-next">&#8250;</button>
+                </div>
+                
+                <div class="training-counter" id="training-counter">1 / 6</div>
+            </div>
         </div>
         
         <div class="section">
@@ -787,7 +1137,7 @@
             
             <div class="stereo-comparison">
                 <div class="stereo-panel">
-                    <div class="stereo-panel-header">Stereo Input</div>
+                    <div class="stereo-panel-header">Stereo Input<br><span class="hover-hint">(hover to switch L/R)</span></div>
                     <div class="stereo-panel-content">
                         <div class="stereo-input-container">
                             <img id="stereo-input-img" src="static/stereo/bissel/left_rect.png" alt="Stereo Input">
@@ -796,6 +1146,7 @@
                                 <div class="stereo-hover-zone" id="hover-right"></div>
                             </div>
                             <div class="stereo-input-label" id="stereo-input-label">Left Image</div>
+                            <img src="static/logo/frog-logo.svg" alt="" class="watermark">
                         </div>
                     </div>
                 </div>
@@ -1455,6 +1806,277 @@
             });
         });
 
+        // SUDS Dataset functionality
+        (function() {
+            const sudsTabBtns = document.querySelectorAll('.suds-tab');
+            const sudsTabContents = document.querySelectorAll('.suds-tab-content');
+            const sudsSequenceBtns = document.querySelectorAll('.suds-sequence-btn');
+            const sudsGif = document.getElementById('suds-gif');
+            const sudsMeshCanvas = document.getElementById('suds-mesh-canvas');
+            const sudsMeshContainer = document.getElementById('suds-mesh-container');
+            
+            let currentSequence = 'boiler';
+            let sudsScene, sudsCamera, sudsRenderer, sudsControls, sudsCurrentModel;
+            
+            // Camera configuration for each sequence
+            const sudsSequenceConfig = {
+                mossy_wreck: {
+                    cameraPosition: { x: -3, y: 2, z: 1.0 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 2.0
+                },
+                engine_2: {
+                    cameraPosition: { x: 0, y: 0, z: 12 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 5.0
+                },
+                shaft: {
+                    cameraPosition: { x: 3, y: 2, z: -3 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 2.0
+                },
+                engine_1: {
+                    cameraPosition: { x: 3, y: 2, z: -9 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 5.0
+                },
+                ribs: {
+                    cameraPosition: { x: 3, y: 2, z: 3 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 3.0
+                },
+                propeller: {
+                    cameraPosition: { x: 3, y: 2, z: 21 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 12.0
+                },
+                engine_3: {
+                    cameraPosition: { x: 0, y: 2, z: 3 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 3.0
+                },
+                boiler: {
+                    cameraPosition: { x: 3, y: 2, z: 0 },
+                    lookAt: { x: 0, y: 0, z: 0 },
+                    zoom: 1.5
+                }
+            };
+            
+            // Initialize Three.js for mesh viewer
+            function initSudsMeshViewer() {
+                sudsScene = new THREE.Scene();
+                sudsScene.background = new THREE.Color(0x1a1a1a);
+                
+                sudsCamera = new THREE.PerspectiveCamera(50, sudsMeshContainer.clientWidth / sudsMeshContainer.clientHeight, 0.1, 1000);
+                sudsCamera.position.set(2, 2, 2);
+                
+                sudsRenderer = new THREE.WebGLRenderer({ canvas: sudsMeshCanvas, antialias: true });
+                sudsRenderer.setSize(sudsMeshContainer.clientWidth, sudsMeshContainer.clientHeight);
+                sudsRenderer.setPixelRatio(window.devicePixelRatio);
+                
+                sudsControls = new OrbitControls(sudsCamera, sudsRenderer.domElement);
+                sudsControls.enableDamping = true;
+                sudsControls.dampingFactor = 0.05;
+                
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                sudsScene.add(ambientLight);
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(5, 5, 5);
+                sudsScene.add(directionalLight);
+                const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+                directionalLight2.position.set(-5, -5, -5);
+                sudsScene.add(directionalLight2);
+                
+                loadSudsMesh(currentSequence);
+                animateSuds();
+            }
+            
+            function loadSudsMesh(sequence) {
+                const loader = new GLTFLoader();
+                const meshPath = `static/dataset/meshes/${sequence}.glb`;
+                const config = sudsSequenceConfig[sequence] || sudsSequenceConfig.boiler;
+                
+                if (sudsCurrentModel) {
+                    sudsScene.remove(sudsCurrentModel);
+                }
+                
+                loader.load(meshPath, (gltf) => {
+                    sudsCurrentModel = gltf.scene;
+                    sudsCurrentModel.rotation.x = -Math.PI / 2;
+                    
+                    // Update matrix world after rotation
+                    sudsCurrentModel.updateMatrixWorld(true);
+                    
+                    // Get bounding box after rotation
+                    const box = new THREE.Box3().setFromObject(sudsCurrentModel);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    
+                    // Scale to fit view (apply zoom factor)
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = (2.5 / maxDim) * config.zoom;
+                    sudsCurrentModel.scale.setScalar(scale);
+                    
+                    // Recalculate center after scaling
+                    sudsCurrentModel.updateMatrixWorld(true);
+                    const boxScaled = new THREE.Box3().setFromObject(sudsCurrentModel);
+                    const centerScaled = boxScaled.getCenter(new THREE.Vector3());
+                    
+                    // Move model so its center is at origin
+                    sudsCurrentModel.position.set(-centerScaled.x, -centerScaled.y, -centerScaled.z);
+                    
+                    sudsScene.add(sudsCurrentModel);
+                    
+                    // Set camera position and target from config
+                    sudsCamera.position.set(config.cameraPosition.x, config.cameraPosition.y, config.cameraPosition.z);
+                    sudsControls.target.set(config.lookAt.x, config.lookAt.y, config.lookAt.z);
+                    sudsControls.update();
+                }, undefined, (error) => {
+                    console.error('Error loading mesh:', error);
+                });
+            }
+            
+            function animateSuds() {
+                requestAnimationFrame(animateSuds);
+                sudsControls.update();
+                sudsRenderer.render(sudsScene, sudsCamera);
+            }
+            
+            function updateSequence(sequence) {
+                currentSequence = sequence;
+                
+                // Update GIF
+                sudsGif.src = `static/dataset/gifs/${sequence}.gif`;
+                
+                // Update mesh
+                loadSudsMesh(sequence);
+                
+                // Update active button
+                sudsSequenceBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.sequence === sequence);
+                });
+            }
+            
+            // Tab switching
+            sudsTabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.dataset.tab;
+                    
+                    sudsTabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    sudsTabContents.forEach(content => {
+                        content.classList.toggle('active', content.id === `suds-${tabId}`);
+                    });
+                });
+            });
+            
+            // Sequence switching
+            sudsSequenceBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateSequence(btn.dataset.sequence);
+                });
+            });
+            
+            // Handle resize
+            function handleResize() {
+                if (sudsRenderer && sudsMeshContainer) {
+                    // Get the actual rendered size from the container
+                    const rect = sudsMeshContainer.getBoundingClientRect();
+                    const width = rect.width;
+                    const height = rect.height;
+                    
+                    if (width > 0 && height > 0) {
+                        sudsCamera.aspect = width / height;
+                        sudsCamera.updateProjectionMatrix();
+                        sudsRenderer.setSize(width, height, false);
+                    }
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            
+            // Fullscreen functionality
+            const sudsFullscreenBtn = document.getElementById('suds-fullscreen-btn');
+            const sudsMeshPanel = document.getElementById('suds-mesh-panel');
+            
+            sudsFullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    sudsMeshPanel.requestFullscreen().then(() => {
+                        setTimeout(handleResize, 150);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+            
+            document.addEventListener('fullscreenchange', () => {
+                // Use multiple timeouts to catch the layout settling
+                setTimeout(handleResize, 50);
+                setTimeout(handleResize, 150);
+                setTimeout(handleResize, 300);
+            });
+            
+            // Initialize
+            initSudsMeshViewer();
+            
+            // Training gallery functionality
+            let trainingImages = [];
+            let trainingIndex = 0;
+            const trainingLeftImg = document.getElementById('training-left-img');
+            const trainingRightImg = document.getElementById('training-right-img');
+            const trainingCounter = document.getElementById('training-counter');
+            const trainingPrev = document.getElementById('training-prev');
+            const trainingNext = document.getElementById('training-next');
+            
+            // Fetch the manifest of training images
+            fetch('static/suds_training/manifest.json')
+                .then(response => response.json())
+                .then(images => {
+                    trainingImages = images;
+                    if (trainingImages.length > 0) {
+                        updateTrainingImages();
+                    }
+                })
+                .catch(err => console.error('Error loading training manifest:', err));
+            
+            function updateTrainingImages() {
+                if (trainingImages.length === 0) return;
+                const timestamp = trainingImages[trainingIndex];
+                trainingLeftImg.src = `static/suds_training/left/${timestamp}.png`;
+                trainingRightImg.src = `static/suds_training/right/${timestamp}.png`;
+                trainingCounter.textContent = `${trainingIndex + 1} / ${trainingImages.length}`;
+            }
+            
+            trainingPrev.addEventListener('click', () => {
+                if (trainingImages.length === 0) return;
+                trainingIndex = (trainingIndex - 1 + trainingImages.length) % trainingImages.length;
+                updateTrainingImages();
+            });
+            
+            trainingNext.addEventListener('click', () => {
+                if (trainingImages.length === 0) return;
+                trainingIndex = (trainingIndex + 1) % trainingImages.length;
+                updateTrainingImages();
+            });
+            
+            // Keyboard navigation for training gallery
+            document.addEventListener('keydown', (e) => {
+                // Only if training tab is visible and images are loaded
+                const trainingTab = document.getElementById('suds-training');
+                if (!trainingTab.classList.contains('active') || trainingImages.length === 0) return;
+                
+                if (e.key === 'ArrowLeft') {
+                    trainingIndex = (trainingIndex - 1 + trainingImages.length) % trainingImages.length;
+                    updateTrainingImages();
+                } else if (e.key === 'ArrowRight') {
+                    trainingIndex = (trainingIndex + 1) % trainingImages.length;
+                    updateTrainingImages();
+                }
+            });
+        })();
+        
         // Stereo comparison functionality
         (function() {
             const sceneSelect = document.getElementById('scene-select');
@@ -1565,6 +2187,20 @@
                 });
             }
         })();
+        
+        // Disable right-click context menu on the entire page
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable drag on images and media
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'CANVAS') {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 </body>
 </html>
