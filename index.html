@@ -229,6 +229,79 @@
             height: 65px;
         }
         
+        /* Floating Navigation Menu */
+        .floating-nav {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 12px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            min-width: 140px;
+        }
+        
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: block;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            background: #f0f0f0;
+            color: #2196F3;
+            transform: translateX(5px);
+        }
+        
+        .nav-link.active {
+            background: #2196F3;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: #2196F3;
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 1200px) {
+            .floating-nav {
+                opacity: 0.7;
+            }
+            
+            .floating-nav:hover {
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .floating-nav {
+                display: none;
+            }
+        }
+        
         .abstract-section {
             margin-bottom: 40px;
         }
@@ -277,6 +350,36 @@
             color: #888;
             font-style: italic;
             margin-top: 8px;
+        }
+        
+        .citation-section {
+            margin: 60px auto 40px auto;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+        
+        .citation-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #222;
+            text-align: center;
+        }
+        
+        .citation-box {
+            background: #f0f0f0;
+            padding: 25px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .citation-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         
         .figure-caption {
@@ -1191,7 +1294,7 @@
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     Code <span class="coming-soon">(Coming Soon)</span>
                 </span>
-                <a href="#" class="paper-link" target="_blank" rel="noopener">
+                <a href="https://www.arxiv.org/abs/2601.10814" class="paper-link" target="_blank" rel="noopener">
                     <img src="static/logo/arXiv.png" alt="arXiv">
                     arXiv
                 </a>
@@ -1202,11 +1305,22 @@
             </div>
         </header>
         
+        <!-- Floating Navigation Menu -->
+        <nav class="floating-nav" id="floating-nav">
+            <div class="nav-menu">
+                <a href="#abstract-section" class="nav-link" data-section="abstract-section">Abstract</a>
+                <a href="#approach-section" class="nav-link" data-section="approach-section">Approach</a>
+                <a href="#datasets-section" class="nav-link" data-section="datasets-section">Datasets</a>
+                <a href="#results-section" class="nav-link" data-section="results-section">Results</a>
+                <a href="#citation-section" class="nav-link" data-section="citation-section">Citation</a>
+            </div>
+        </nav>
+        
         <div class="figure-section">
             <img src="static/figures/intro_figure.png" alt="SurfSLAM Overview Figure">
             <p class="image-credit">Image courtesy of the National Oceanic and Atmospheric Administration Thunder Bay National Marine Sanctuary</p>
         </div>
-        <div class="abstract-section">
+        <div class="abstract-section" id="abstract-section">
             <h2>Abstract</h2>
             <p class="abstract-text">
                 Localization and mapping are core perceptual capabilities for underwater robots. Stereo cameras provide a low-cost means of directly estimating metric depth to support these tasks. However, despite recent advances in stereo depth estimation on land, computing depth from image pairs in underwater scenes remains challenging. In underwater environments, images are degraded by light attenuation, visual artifacts, and dynamic lighting conditions. Furthermore, real-world underwater scenes frequently lack rich texture useful for stereo depth estimation and 3D reconstruction. As a result, stereo estimation networks trained on in-air data cannot transfer directly to the underwater domain. In addition, there is a lack of real-world underwater stereo datasets for supervised training of neural networks. Poor underwater depth estimation is compounded in stereo-based Simultaneous Localization and Mapping (SLAM) algorithms, making it a fundamental challenge for underwater robot perception. To address these challenges, we propose a novel framework that enables sim-to-real training of underwater stereo disparity estimation networks using simulated data and self-supervised finetuning. We leverage our learned depth predictions to develop SurfSLAM, a novel framework for real-time underwater SLAM that fuses stereo cameras with IMU, barometric, and Doppler Velocity Log (DVL) measurements. Lastly, we collect a challenging real-world dataset of shipwreck surveys using an underwater robot. Our dataset features over 24,000 stereo pairs, along with high-quality, dense photogrammetry models and reference trajectories for evaluation. Through extensive experiments, we demonstrate the advantages of the proposed training approach on real-world data for improving stereo estimation in the underwater domain and for enabling accurate trajectory estimation and 3D reconstruction of complex shipwreck sites.
@@ -1214,7 +1328,7 @@
         </div>
         
         
-        <div class="section">
+        <div class="section" id="approach-section">
             <h2>Approach</h2>
             <div class="figure-section">
                 <img src="static/figures/method.svg" alt="SurfSLAM Method Overview">
@@ -1224,7 +1338,7 @@
             </p>
         </div>
         
-        <div class="suds-section">
+        <div class="suds-section" id="datasets-section">
             <h2>Stereo Underwater Dataset for Shipwrecks (SUDS)</h2>
             <p>
                 SUDS is a comprehensive stereo underwater dataset collected at the Thunder Bay National Marine Sanctuary. 
@@ -1351,7 +1465,7 @@
             </div>
         </div>
         
-        <div class="section">
+        <div class="section" id="results-section">
             <h2>Results</h2>
             <p>
                 We evaluate SurfSLAM on challenging real-world underwater data collected at the Thunder Bay National Marine Sanctuary. 
@@ -1518,6 +1632,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="citation-section" id="citation-section">
+        <h2>Citation</h2>
+        <p>If you find this work useful, please cite using the following:</p>
+        <br>
+        <div class="citation-box">
+            <pre class="citation-text">@misc{bagoren2026surfslamsimtorealunderwaterstereo,
+      title={SurfSLAM: Sim-to-Real Underwater Stereo Reconstruction For Real-Time SLAM}, 
+      author={Onur Bagoren and Seth Isaacson and Sacchin Sundar and Yung-Ching Sun and Anja Sheppard and Haoyu Ma and Abrar Shariff and Ram Vasudevan and Katherine A. Skinner},
+      year={2026},
+      eprint={2601.10814},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2601.10814}, 
+}</pre>
         </div>
     </div>
 
@@ -2586,6 +2717,75 @@
             document.addEventListener('touchend', () => {
                 isDragging = false;
             });
+        })();
+        
+        // Floating Navigation Menu functionality
+        (function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('[id$="-section"]');
+            
+            // Smooth scrolling for navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        const offsetTop = targetSection.offsetTop - 80; // Account for any fixed headers
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Update active section on scroll
+            function updateActiveSection() {
+                const scrollPosition = window.scrollY + 150; // Offset for better UX
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('data-section') === sectionId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+                
+                // Handle case when at the top of the page
+                if (window.scrollY < 100) {
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('data-section') === 'abstract-section') {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+            }
+            
+            // Throttle scroll events for better performance
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateActiveSection();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Initial update
+            updateActiveSection();
         })();
         
         // Disable right-click context menu on the entire page
