@@ -1,0 +1,56 @@
+baseline: defaults.yaml
+
+settings_changes:
+  NULL
+
+# Vocabulary fitting parameters
+output_path: vlad_vocab.npz
+max_descriptors: 2500000
+max_keypoints_per_image: 1024
+max_imgs_per_sequence: 500
+max_imgs_per_dataset: NULL
+target_im_width: 640 
+device: cuda:0
+frame_skip: 1
+
+all_data:
+  -
+    dataset_family: flsea_vi
+    data_root: ${flsea}
+    datasets:
+      - archive/canyons/flatiron/imgs/
+      - archive/canyons/horse_canyon/imgs/
+      - archive/canyons/u_canyon/imgs/
+      - archive/red_sea/dice_path/imgs/
+      - archive/red_sea/northeast_path/imgs/
+      - archive/red_sea/landward_path/imgs/
+      - archive/red_sea/pier_path/imgs/
+  -
+    dataset_family: ACFR
+    data_root: ${acfr_slam}
+    ignore_pattern: ".*RM16.*"
+    max_imgs_per_sequence: 1500
+    datasets:
+      - ScottReef/ScottReef_20090804_084719_IMG/i20090804_084719_cv/lc/
+      - Tasmania/Tasmania_20081007_224547_IMG/i20081007_224547_cv/
+  - 
+    dataset_family: tbnms
+    data_root: ${raw_tbnms}
+    calibration: PROJECT_ROOT/cfg/calibration/calib_vi_optimized_surfslam.yaml
+    datasets:
+      - baycity_1_warp
+      - baycity_2_warp
+      - baycity_3_warp
+      - baycity_4_warp
+      - bissel_candidate3
+      - lucy_1_warp
+      - lucy_3_warp
+      - lucy_4_warp
+      - lucy_5_warp
+      - lucy_6_warp
+      - montana_candidate1
+      - rend_1_warp
+      - rend_2_warp
+      - wilson_1_warp
+      - wilson_2_warp
+      - wilson_candidate3

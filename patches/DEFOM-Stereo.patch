@@ -1,0 +1,204 @@
+diff --git a/core/__init__.py b/defom_core/__init__.py
+similarity index 100%
+rename from core/__init__.py
+rename to defom_core/__init__.py
+diff --git a/core/corr.py b/defom_core/corr.py
+similarity index 99%
+rename from core/corr.py
+rename to defom_core/corr.py
+index 37d7ec9..6864b77 100644
+--- a/core/corr.py
++++ b/defom_core/corr.py
+@@ -2,7 +2,7 @@ import numpy as np
+ import torch
+ import torch.nn as nn
+ import torch.nn.functional as F
+-from core.utils.utils import bilinear_sampler
++from defom_core.utils.utils import bilinear_sampler
+ 
+ try:
+     import corr_sampler
+diff --git a/core/defom_stereo.py b/defom_core/defom_stereo.py
+similarity index 92%
+rename from core/defom_stereo.py
+rename to defom_core/defom_stereo.py
+index 4d32a53..7963e7b 100644
+--- a/core/defom_stereo.py
++++ b/defom_core/defom_stereo.py
+@@ -1,10 +1,10 @@
+ import torch
+ import torch.nn as nn
+ import torch.nn.functional as F
+-from core.update import BasicMultiUpdateBlock, ScaleBasicMultiUpdateBlock
+-from core.extractor import BasicEncoder, MultiBasicEncoder, ResidualBlock, DefomEncoder
+-from core.corr import CorrBlock1D, PytorchAlternateCorrBlock1D, CorrBlockFast1D, AlternateCorrBlock
+-from core.utils.utils import coords_grid, upflow, get_danv2_io_size
++from defom_core.update import BasicMultiUpdateBlock, ScaleBasicMultiUpdateBlock
++from defom_core.extractor import BasicEncoder, MultiBasicEncoder, ResidualBlock, DefomEncoder
++from defom_core.corr import CorrBlock1D, PytorchAlternateCorrBlock1D, CorrBlockFast1D, AlternateCorrBlock
++from defom_core.utils.utils import coords_grid, upflow, get_danv2_io_size
+ 
+ 
+ try:
+@@ -28,7 +28,8 @@ class DEFOMStereo(nn.Module):
+         self.register_buffer('mean', torch.tensor([[0.485, 0.456, 0.406]])[..., None, None] * 255)
+         self.register_buffer('std', torch.tensor([[0.229, 0.224, 0.225]])[..., None, None] * 255)
+ 
+-        self.defomencoder = DefomEncoder(args.dinov2_encoder, idepth_scale=args.idepth_scale)
++        self.defomencoder = DefomEncoder(args.dinov2_encoder, idepth_scale=args.idepth_scale,
++                                         depth_anything_checkpoint=args.depth_anything_checkpoint)
+ 
+         context_dims = args.hidden_dims
+ 
+diff --git a/core/extractor.py b/defom_core/extractor.py
+similarity index 95%
+rename from core/extractor.py
+rename to defom_core/extractor.py
+index 285b018..947a388 100644
+--- a/core/extractor.py
++++ b/defom_core/extractor.py
+@@ -345,7 +345,7 @@ class MultiBasicEncoder(nn.Module):
+ 
+ 
+ class DefomEncoder(nn.Module):
+-    def __init__(self, dinov2_encoder, pretrained=True, freeze=True, idepth_scale=0.25):
++    def __init__(self, dinov2_encoder, pretrained=True, freeze=True, idepth_scale=0.25, depth_anything_checkpoint=None):
+         super(DefomEncoder, self).__init__()
+         self.dinov2_encoder = dinov2_encoder
+         self.idepth_scale = idepth_scale
+@@ -361,9 +361,17 @@ class DefomEncoder(nn.Module):
+ 
+         self.depth_anything = DepthAnythingV2(**model_configs[self.dinov2_encoder])
+ 
+-        if pretrained and os.path.exists(f'./checkpoints/depth_anything_v2_{dinov2_encoder}.pth'):
++        if depth_anything_checkpoint:
++            print(f"Loading Depth Anything checkpoint from {depth_anything_checkpoint}")
++            da_cpkt = torch.load(depth_anything_checkpoint,
++                                 map_location='cpu', weights_only=False)
++            N = len("module.")
++            da_cpkt = {k[N:]:v for k,v in da_cpkt["model"].items()}
++            self.depth_anything.load_state_dict(da_cpkt, strict=False)
++        elif pretrained and os.path.exists(f'./checkpoints/depth_anything_v2_{dinov2_encoder}.pth'):
+             self.depth_anything.load_state_dict(
+                 torch.load(f'./checkpoints/depth_anything_v2_{dinov2_encoder}.pth', map_location='cpu'), strict=False)
++
+         if freeze:
+             for param in self.depth_anything.pretrained.parameters():
+                 param.requires_grad = False
+diff --git a/core/stereo_datasets.py b/defom_core/stereo_datasets.py
+similarity index 99%
+rename from core/stereo_datasets.py
+rename to defom_core/stereo_datasets.py
+index 64e96c9..3d18371 100644
+--- a/core/stereo_datasets.py
++++ b/defom_core/stereo_datasets.py
+@@ -15,8 +15,8 @@ from pathlib import Path
+ from glob import glob
+ import os.path as osp
+ 
+-from core.utils import frame_utils
+-from core.utils.augmentor import DispAugmentor, SparseDispAugmentor
++from defom_core.utils import frame_utils
++from defom_core.utils.augmentor import DispAugmentor, SparseDispAugmentor
+ 
+ 
+ class StereoDataset(data.Dataset):
+diff --git a/core/update.py b/defom_core/update.py
+similarity index 100%
+rename from core/update.py
+rename to defom_core/update.py
+diff --git a/core/utils/__init__.py b/defom_core/utils/__init__.py
+similarity index 100%
+rename from core/utils/__init__.py
+rename to defom_core/utils/__init__.py
+diff --git a/core/utils/augmentor.py b/defom_core/utils/augmentor.py
+similarity index 100%
+rename from core/utils/augmentor.py
+rename to defom_core/utils/augmentor.py
+diff --git a/core/utils/dist_utils.py b/defom_core/utils/dist_utils.py
+similarity index 100%
+rename from core/utils/dist_utils.py
+rename to defom_core/utils/dist_utils.py
+diff --git a/core/utils/frame_utils.py b/defom_core/utils/frame_utils.py
+similarity index 100%
+rename from core/utils/frame_utils.py
+rename to defom_core/utils/frame_utils.py
+diff --git a/core/utils/utils.py b/defom_core/utils/utils.py
+similarity index 100%
+rename from core/utils/utils.py
+rename to defom_core/utils/utils.py
+diff --git a/demo.py b/demo.py
+index e82a204..e37e1df 100644
+--- a/demo.py
++++ b/demo.py
+@@ -1,5 +1,5 @@
+ import sys
+-sys.path.append('core')
++sys.path.append('defom_core')
+ 
+ import argparse
+ import glob
+@@ -7,7 +7,7 @@ import numpy as np
+ import torch
+ from tqdm import tqdm
+ from pathlib import Path
+-from core.defom_stereo import DEFOMStereo
++from defom_core.defom_stereo import DEFOMStereo
+ from utils.utils import InputPadder
+ from PIL import Image
+ from matplotlib import pyplot as plt
+diff --git a/evaluate_stereo.py b/evaluate_stereo.py
+index 078515b..041a0c3 100644
+--- a/evaluate_stereo.py
++++ b/evaluate_stereo.py
+@@ -11,10 +11,10 @@ torch.cuda.empty_cache()
+ from PIL import Image
+ 
+ from tqdm import tqdm
+-from core.defom_stereo import DEFOMStereo, autocast
++from defom_core.defom_stereo import DEFOMStereo, autocast
+ 
+-import core.stereo_datasets as datasets
+-from core.utils.utils import InputPadder
++import defom_core.stereo_datasets as datasets
++from defom_core.utils.utils import InputPadder
+ 
+ 
+ def count_parameters(model):
+diff --git a/make_submission.py b/make_submission.py
+index 7772ce9..36837a9 100644
+--- a/make_submission.py
++++ b/make_submission.py
+@@ -11,11 +11,11 @@ import cv2
+ import sys
+ 
+ 
+-from core.defom_stereo import DEFOMStereo, autocast
++from defom_core.defom_stereo import DEFOMStereo, autocast
+ 
+-import core.stereo_datasets as datasets
+-from core.utils.utils import InputPadder
+-from core.utils.frame_utils import writePFM
++import defom_core.stereo_datasets as datasets
++from defom_core.utils.utils import InputPadder
++from defom_core.utils.frame_utils import writePFM
+ 
+ 
+ def makedirs(path):
+diff --git a/train_stereo.py b/train_stereo.py
+index 8a08082..a5101d4 100644
+--- a/train_stereo.py
++++ b/train_stereo.py
+@@ -16,10 +16,10 @@ from torch.utils.data import DataLoader
+ 
+ from utils.dist_utils import get_dist_info, init_dist, setup_for_distributed
+ from utils.utils import *
+-from core.defom_stereo import DEFOMStereo
++from defom_core.defom_stereo import DEFOMStereo
+ 
+ from evaluate_stereo import validate_things, count_parameters
+-import core.stereo_datasets as datasets
++import defom_core.stereo_datasets as datasets
+ 
+ try:
+     from torch.cuda.amp import GradScaler

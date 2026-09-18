@@ -1,0 +1,38 @@
+# Per-scene transform from the released ground-truth trajectory frame into the
+# photogrammetry model frame.
+#
+# Why this file exists
+# --------------------
+# The two ground-truth assets in the release are expressed in different frames:
+#
+#   ${suds_slam}/<scene>/ground_truth/reconstruction.ply  -- photogrammetry model frame
+#   ${suds_slam}/<scene>/ground_truth/trajectory.tum      -- re-referenced so the first
+#                                                            pose is the identity
+#
+# evaluate_trajectories.py aligns an estimated trajectory onto trajectory.tum, so the
+# alignment it writes maps estimate -> first-pose frame. Map evaluation compares against
+# reconstruction.ply, which lives in the model frame, so it needs one more hop:
+#
+#   T_model<-est = T0 @ T_align
+#
+# T0 below is the first ground-truth pose in the model frame. Left-multiplying the
+# released trajectory.tum by it reproduces the model-frame ground truth to within the
+# 1e-6 m rounding of the .tum files (verified max |dt|: boiler 5.3e-6 m, engine 4.8e-6 m,
+# long 2.6e-5 m; max |dR| 2.3e-6 for all three).
+#
+# Values are the first row of the model-frame ground-truth trajectories that predate the
+# release re-referencing (gt_5fps/<scene>/gt_traj/left.tum), copied verbatim. Baking them
+# in here keeps the map comparison runnable from the release alone.
+
+scenes:
+  monohansett_boiler:
+    translation: [6.917600, -3.596227, 0.012516]
+    quaternion_xyzw: [0.484954, -0.528741, -0.513076, 0.471176]
+
+  monohansett_engine:
+    translation: [14.995999, -13.378800, 0.298571]
+    quaternion_xyzw: [0.458057, -0.537813, -0.554178, 0.440260]
+
+  monohansett_long:
+    translation: [12.778497, 4.928884, -7.619265]
+    quaternion_xyzw: [0.653425, -0.321828, -0.343727, 0.592718]

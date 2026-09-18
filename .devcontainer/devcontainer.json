@@ -1,0 +1,33 @@
+{
+  "image": "surfslam:slam_${env:USER}",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "donjayamanne.python-environment-manager",
+        "huizhou.githd"
+      ]
+    }
+  },
+  "mounts":[
+    "source=/mnt/,target=/mnt,type=bind"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/${env:USER}/SurfSLAM,type=bind",
+  "workspaceFolder": "/home/${env:USER}/SurfSLAM",
+  "containerEnv": {"DISPLAY":"${env:DISPLAY}"},
+  "runArgs": [
+              "--privileged",
+              "--gpus=all",
+              "-e NVIDIA_DRIVER_CAPABILITIES=all",
+              "--net=host",
+              "--runtime=nvidia",
+              "-e SDL_VIDEODRIVER=x11",
+              "--shm-size=64G",
+              "--ipc=host",
+              "-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+              "-v", "${env:HOME}/.Xauthority:/home/${env:USER}/.Xauthority",
+              "-e", "SDL_VIDEODRIVER=x11"
+            ],
+  "postAttachCommand": "sudo ldconfig && bash docker/install_pyturtlmap.sh"
+}

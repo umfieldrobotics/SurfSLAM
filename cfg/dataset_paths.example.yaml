@@ -1,0 +1,16 @@
+# Copy this file to cfg/dataset_paths.yaml and fill in the paths you have.
+#
+#     cp cfg/dataset_paths.example.yaml cfg/dataset_paths.yaml
+#
+# Leave a key as `null` if you don't use it
+
+# --- shipped in the DeepBlue release -----------------------------------------
+suds_slam: null        # SUDS_SLAM/       scenes: <scene>/measurements.hdf5 + ground_truth/
+surfslam_data: null    # surfslam_data/   DEFOM checkpoint (ours_vits_slam.pth) + GT maps (gt_5fps/)
+slam_results: null     # where run_all_ablations.sh parks finished runs; defaults to ./ablation_outputs if unset
+
+# --- optional ------------------------------------------------------------------
+baseline_results: null # baseline SLAM result roots, only for reproducing the paper tables
+flsea: null            # FLSea_VI image tree, only for retraining the NetVLAD vocabulary
+acfr_slam: null        # ACFR_SLAM image tree, only for retraining the NetVLAD vocabulary
+raw_tbnms: null        # raw TBNMS image tree, only for retraining the NetVLAD vocabulary

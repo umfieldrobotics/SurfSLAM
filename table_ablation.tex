@@ -1,0 +1,19 @@
+% \usepackage{pifont} for \ding; define once in your preamble:
+% \newcommand{\cmark}{\ding{51}}
+% \newcommand{\xmark}{\ding{55}}
+\begin{table}
+\caption{Ablation results for disabling individual sensors from the SLAM pipeline. Disabling the camera corresponds to running TURTLMap \cite{song2024turtlmap}. The reported metric is RMS APE; each result is the median of five runs.}
+\centering
+\begin{tabular}{ccc||ccc}
+\toprule
+Camera & DVL & Baro. & Engine & Boiler & Long \\
+\midrule
+\cmark & \cmark & \xmark & \underline{0.226} & \textbf{0.246} & \textbf{0.386} \\
+\cmark & \xmark & \cmark & 14.439 & 102.070 & 450.411 \\
+\xmark & \cmark & \cmark & 0.399 & 0.528 & 1.312 \\
+\midrule
+\cmark & \cmark & \cmark & \textbf{0.216} & \underline{0.246} & \underline{0.444} \\
+\bottomrule
+\end{tabular}
+\label{tab:ablation_results}
+\end{table}

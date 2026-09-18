@@ -1,0 +1,69 @@
+# Trajectory evaluation config for scripts/run_all_ablations.sh, which runs
+# the TBNMS DVL/barometer ablations (cfg/tbnms_ablations/*.yaml) alongside
+# the plain baseline scenes (cfg/tbnms/*.yaml).
+#
+# Each ablation gets its own "sequence" entry (same ground truth as its base
+# scene) so DVL-ablation and barometer-ablation runs are scored separately
+# instead of being lumped together with each other or with the baseline.
+output_dir: "./eval_results/ablations"
+
+ape:
+  pose_relation: "trans_part"  # Options: trans_part, rot_part, full
+  align: true
+  align_origin: false
+
+expected_trials: 5
+
+sequences:
+  - name: "monohansett_boiler_no_dvl"
+    ground_truth: "${suds_slam}/boiler/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_boiler_no_barometer"
+    ground_truth: "${suds_slam}/boiler/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_engine_no_dvl"
+    ground_truth: "${suds_slam}/engine/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_engine_no_barometer"
+    ground_truth: "${suds_slam}/engine/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_long_no_dvl"
+    ground_truth: "${suds_slam}/long/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_long_no_barometer"
+    ground_truth: "${suds_slam}/long/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_boiler"
+    ground_truth: "${suds_slam}/boiler/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_engine"
+    ground_truth: "${suds_slam}/engine/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_long"
+    ground_truth: "${suds_slam}/long/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+
+algorithms:
+  # run_all_ablations.sh sweeps tracker.traj_pose_queue_max_size, which bounds how far
+  # back a loop closure can be validated, and writes each arm to its own tree. Scoring
+  # them separately lets the first arm be evaluated while the second is still running;
+  # the second entry just warns about missing dirs until then.
+  # trial_pattern matches the trial_* subdirs produced by --num_repeats.
+  - name: "surfslam_window_10k"
+    base_path: "${slam_results}/window_10000"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false
+  - name: "surfslam_window_200k"
+    base_path: "${slam_results}/window_200000"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false
+  # TurtlMap baseline. Not window-swept: it disables loop closure, so nothing queries the
+  # trajectory pose window. Only the three un-ablated sequences apply; it will warn about
+  # the six *_no_dvl / *_no_barometer sequences, which is expected.
+  - name: "turtlmap"
+    base_path: "${slam_results}/turtlmap"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false

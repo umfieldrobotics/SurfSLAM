@@ -1,0 +1,22 @@
+# Statistics Summary Configuration
+# Summarizes runtime and pipeline statistics for local SurfSLAM runs.
+# Add more `methods` entries (e.g. runs from different hardware) to compare.
+
+output_dir: "./stats_results"
+
+# Sequences to analyze (matching traj_eval_cfg.yaml)
+sequences:
+  - monohansett_long
+  - monohansett_boiler
+  - monohansett_start
+
+methods:
+  # Picks up every run of examples/run_surfslam.py in outputs/. If you ran
+  # with --num_repeats, use trial_pattern: "{sequence}_[0-9]*/trial_*" instead.
+  - name: "surfslam"
+    base_path: "PROJECT_ROOT/outputs"
+    trial_pattern: "{sequence}_[0-9]*"
+    sequences:
+      - monohansett_long
+      - monohansett_boiler
+      - monohansett_start

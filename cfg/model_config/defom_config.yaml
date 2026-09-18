@@ -1,0 +1,29 @@
+# Checkpoint: path to the fine-tuned DEFOM-Stereo weights.
+# Download instructions are in the top-level README; point this at your local copy.
+restore_ckpt: ${surfslam_data}/ours_vits_slam.pth
+depth_anything_checkpoint: NULL
+
+# Precision / inference
+mixed_precision: false
+valid_iters: 32          # DEFOM default
+scale_iters: 8           # DEFOM default
+
+# Backbone / encoder
+dinov2_encoder: "vits"   # vits/vitb/vitl/vitg
+shared_backbone: true
+
+# Corr + scale settings
+corr_implementation: "reg"
+corr_levels: 2           # DEFOM default
+corr_radius: 4
+scale_list: [0.125, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
+scale_corr_radius: 2
+
+# Architecture
+hidden_dims: [128, 128, 128]
+n_downsample: 2
+context_norm: "batch"
+n_gru_layers: 3
+
+# Initialization
+idepth_scale: 0.5

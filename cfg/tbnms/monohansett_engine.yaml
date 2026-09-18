@@ -1,0 +1,6 @@
+baseline: defaults.yaml
+dataset: ${suds_slam}/engine/measurements.hdf5
+calibration: PROJECT_ROOT/cfg/calibration/calib_vi_optimized_surfslam.yaml
+groundtruth_traj: ${suds_slam}/engine/ground_truth/trajectory.tum
+experiment_name: monohansett_engine
+dataset_family: tbnms

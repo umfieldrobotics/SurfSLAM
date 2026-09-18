@@ -1,0 +1,89 @@
+# Full method comparison for the paper's main trajectory table (analysis/results_to_latex.py).
+#
+# Baseline algorithm entries were restored from edb484e~1, with the hardcoded absolute paths
+# ported to the ${baseline_results} dataset key (cfg/dataset_paths.yaml).
+#
+# Sequence naming: the baseline result trees were produced before 8970b4b renamed
+# monohansett_start -> monohansett_engine, so their directories are still named
+# monohansett_start. Rather than denormalize the sequence names, each affected algorithm
+# carries a sequence_aliases entry. Verified equivalent: the old `start` ground truth and the
+# released `engine` ground truth are identical (1488 poses, 299.9 s, max |t| 27.36 m).
+output_dir: "./eval_results/full_comparison"
+
+ape:
+  pose_relation: "trans_part"  # Options: trans_part, rot_part, full
+  align: true
+  align_origin: false
+
+expected_trials: 5
+
+sequences:
+  - name: "monohansett_engine"
+    ground_truth: "${suds_slam}/engine/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_boiler"
+    ground_truth: "${suds_slam}/boiler/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_long"
+    ground_truth: "${suds_slam}/long/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+
+algorithms:
+  - name: "svin2"
+    base_path: "${baseline_results}/svin2/svin2_evals_20260105_152443"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "*.txt"
+    correct_scale: false
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "droidslam"
+    base_path: "${baseline_results}/droid_slam/droidslam_evals_20260104_135705"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "trajectory.txt"
+    correct_scale: false
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "orbslam3"
+    base_path: "${baseline_results}/orbslam3/orbslam3_evals_20260105_005745"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "*_cam_traj.txt"
+    correct_scale: false
+    time_mult: 1.0e-9          # ORB-SLAM3 writes nanosecond stamps
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "mast3r_slam"
+    base_path: "${baseline_results}/mast3r_slam/mast3r_slam_evals_20260104_171134"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "*.txt"
+    correct_scale: true        # monocular: scale is unobservable
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "vggt_slam"
+    base_path: "${baseline_results}/vggt_slam_evals_20251117_141505"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "trajectory.txt"
+    correct_scale: true        # monocular: scale is unobservable
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  # TurtlMap baseline, re-run 260909 alongside the ablations (cfg/tbnms_turtlmap/).
+  - name: "turtlmap"
+    base_path: "${slam_results}/turtlmap"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false
+
+  # Ours, from the same 260909 sweep. window_10000 is the shipped configuration.
+  - name: "surfslam"
+    base_path: "${slam_results}/window_10000"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false
+
+  # Ours on the Jetson (260911), to show the method runs on the vehicle's onboard compute.
+  # Same shipped configuration as `surfslam` above: the trial full_config.yaml files differ
+  # from the window_10000 ones only in host-specific paths (log dirs, calibration, vocab).
+  - name: "surfslam_jetson"
+    base_path: "${slam_results}/jetson_resubmission_trials"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false

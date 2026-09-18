@@ -1,0 +1,11 @@
+{
+  "name": "turtlmap-web",
+  "version": "1.0.0",
+  "description": "TurtlMap web visualization",
+  "type": "module",
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {}
+}
+

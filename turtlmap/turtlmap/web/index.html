@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TurtlMap Live 3D Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./node_modules/three/build/three.module.js",
+            "three/addons/": "./node_modules/three/examples/jsm/"
+        }
+    }
+    </script>
+    <style>
+        html, body { 
+            margin: 0; 
+            height: 100%; 
+            background: #111; 
+            color: #ddd; 
+            font-family: monospace;
+            font-size: 12px;
+        }
+        #hud { 
+            position: absolute; 
+            top: 8px; 
+            left: 8px; 
+            z-index: 10; 
+            background: rgba(0,0,0,0.7); 
+            padding: 10px; 
+            border-radius: 4px; 
+            font-size: 14px; 
+        }
+        #sensor-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 25%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            z-index: 5;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .sensor-row {
+            flex: 1;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .sensor-row:last-child {
+            margin-bottom: 0;
+        }
+        .sensor-title {
+            font-weight: bold;
+            color: #0ff;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-align: center;
+        }
+        .chart-container {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+        .sensor-value {
+            color: #0f0;
+            font-family: monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            text-align: center;
+        }
+        .sensor-label {
+            color: #888;
+            display: inline-block;
+            width: 30px;
+        }
+        #canvas-container {
+            width: 75%;
+            height: 100%;
+        }
+        canvas { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="sensor-panel">
+        <div class="sensor-row">
+            <div class="sensor-title">IMU Acceleration (m/s²)</div>
+            <div class="chart-container">
+                <canvas id="imu-accel-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="sensor-row">
+            <div class="sensor-title">IMU Angular Velocity (rad/s)</div>
+            <div class="chart-container">
+                <canvas id="imu-gyro-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="sensor-row">
+            <div class="sensor-title">DVL Velocity (m/s)</div>
+            <div class="chart-container">
+                <canvas id="dvl-vel-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="sensor-row">
+            <div class="sensor-title">Barometer Depth (m)</div>
+            <div class="chart-container">
+                <canvas id="baro-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div id="hud">
+        <strong>TurtlMap Live Trajectory</strong><br/>
+        <span id="info">Loading...</span>
+    </div>
+    <script type="module" src="./js/viewer.js"></script>
+</body>
+</html>

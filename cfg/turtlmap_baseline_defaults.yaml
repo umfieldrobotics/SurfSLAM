@@ -1,0 +1,187 @@
+### File: turtlmap_baseline_defaults.yaml
+### Settings for running the TURTLMap baseline (stereo constraints, loop closures,
+### and frame-to-frame registration disabled). Swap in for cfg/defaults.yaml when
+### reproducing the TURTLMap comparison runs.
+
+
+# This should be overwritten  at runtime by reading data logs,
+# camera info messages, etc.
+calibration:
+  lidar_to_camera:
+    xyz: [0,0,0]
+    orientation: [0,0,0,1] 
+  camera_intrinsic:
+    k: NULL
+    distortion: NULL
+    new_k: NULL
+    width: NULL
+    height: NULL
+
+debug:
+  global_enabled: False
+
+  # GT keyframe downsample rate (for use_gt_keyframe_timing)
+  gt_keyframe_downsample_hz: 1.0
+
+  flags:
+    profile: False
+    pytorch_detect_anomaly: False
+    log_times: False
+    log_depth_images: False
+    log_raw_images: False
+    frame_to_frame_registration: False
+    draw_teaser_inliers: False
+    loop_closure_registration: False
+    draw_loop_candidates: False
+    draw_frame_matches: False
+    use_gt_keyframe_timing: False
+    enable_image_cache: False
+
+tracker:
+  frame_synthesis:
+    stereo_delta_t_sec: 1.0
+    imu_delta_t_sec: 1.0 # ONUR CHANGE: Turtlmap runs by default at 1 Hz
+    imu_kf_lookahead_suppression_sec: 0.1
+    frame_delta_t_sec_tolerance: 0.01
+    decimate_on_load: True
+    
+  backend_config_path: ./calibration/calib_vi_optimized_tmap.yaml # ONUR CHANGE: use tmap config by default
+  minimum_frame_time: NULL
+
+  # Dense poses retained by the C++ backend for pose lookups. Bounds how far back
+  # a loop closure can be validated: entries older than this are dropped, and a
+  # query against a dropped timestamp is skipped rather than answered.
+  traj_pose_queue_max_size: 10000
+
+  registration_rejection:
+    frame_to_frame:
+      max_translation_error: 0.10
+      max_rotation_err_deg: 5
+      stereo_meas_max_std_dev: 1.5
+    loop_closure:
+      max_translation_error: 10000
+      max_rotation_err_deg: 10000
+      stereo_meas_max_std_dev: 3.5
+
+mapper:
+  device: 0 # don't change this, use CUDA_VISIBLE_DEVICES
+  data_prep_on_cpu: &data_prep_on_cpu False
+
+  stereo_estimator:
+    model_type: DEFOM
+    model_config: !include ./model_config/defom_config.yaml
+    ray_range: [0.1, 20] # in practice, this should be overwritten by the ray range of each scene
+
+  registration:
+    matching:
+      histogram_equalize: True
+      keypoints:
+        superpoint:
+            nms_radius: 4
+            keypoint_threshold: 0.005
+            max_keypoints: 1024
+        superglue:
+            weights: outdoor
+            sinkhorn_iterations: 20
+            match_threshold: 0.1
+
+      ransac:
+        prob: 0.999
+        threshold_px: 1
+
+      loop_closure:
+        num_candidates: 3
+        stop_at_first_candidate: False
+        enabled: False # ONUR CHANGE: Disable loop closures for tmap
+        similarity_threshold: 0.0
+        ransac_min_inliers: 15
+        ransac_threshold: 0.2
+        ransac_min_inlier_ratio: 0.25
+        ransac_min_inliers_ignore_ratio: 30
+        teaser_min_inlier_ratio: 0.25
+        teaser_min_inliers: 15
+        min_time_diff_sec: 20
+      
+    cleanup:
+      enabled: False # ONUR CHANGE: Disable cleanup for tmap
+      sor_neighbors: 10
+      sor_std: 1.0
+      ror_radius: 0.1
+      ror_min_pts: 4
+      enable_sor: True
+      enable_ror: True
+      target_point_count: 75000
+      max_depth_m: 10
+
+    frame_to_frame:
+      enabled: False # ONUR CHANGE: Disable frame-to-frame registration for tmap
+      min_inliers: 10
+      min_inlier_ratio: 0.4
+        
+    place_recognition:
+      image_descriptors:
+        n_clusters: 256
+        descriptor_dim: 256
+        aggregation_method: vlad
+      vocab_path: !project_root examples/place_recognition/vlad_vocab.npz
+
+    registration_type: ransac_3d
+    ransac_3d:
+      N_points: 3
+      threshold: 0.1
+      n_iterations: 200
+      min_inliers: 3
+      min_wall_thickness: 0.25
+
+    icp_refinement:
+      downsample_resolution: 0.05
+      max_correspondence_distance: [0.35, 0.1, 0.025]
+      num_threads: 16
+      max_iterations: 50
+      max_inlier_rmse: 1.0 # m
+      min_gicp_fitness: 0.0 # fraction
+
+
+system:
+  single_threaded: False
+  log_dir_prefix: "./outputs/"
+  image_scale_factor: 0.5
+  track_in_main_process: True # the tracker is basically a data-shuttler, so no need to put it in a separate process
+
+  # Time filtering for log data (in seconds, relative to log start)
+  # Set to null to process entire log
+  start_time: null  # Start processing from this time (seconds from log start)
+  end_time: null    # Stop processing at this time (seconds from log start)
+
+  # Signal staleness configuration - drops data that has been sitting in queues too long
+  # Uses wall-clock time to determine staleness
+  signal_staleness:
+    enabled: true
+    summary_interval_seconds: 10.0
+
+    signals:
+      stereo_input:
+        max_age_seconds: 0.025
+        warn_on_drop: true
+      backend_input:
+        max_age_seconds: 0.025
+        warn_on_drop: true
+      frame:
+        max_age_seconds: 0.5
+        warn_on_drop: true
+      completed_frame:
+        max_age_seconds: 2.5
+        warn_on_drop: true
+      registration_result:
+        max_age_seconds: 1.0
+        warn_on_drop: true
+
+    default:
+      max_age_seconds: null  # null = no dropping
+      warn_on_drop: false
+
+  h5_keys:
+    barometer: "BlueROV_pressure2_fluid"
+    dvl: "dvl_data"
+    imu: "vectornav_IMU"
+    stereo: "zed"

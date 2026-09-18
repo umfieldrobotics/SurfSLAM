@@ -1,0 +1,80 @@
+# Map comparison: trajectory alignment step.
+#
+# analysis/mapping/evaluate_maps.py scores a method's reconstruction against the
+# photogrammetry ground truth, and to do that it needs the rigid transform that puts the
+# method's map in the ground-truth frame. That transform comes from aligning the method's
+# *trajectory* first, which is what this config drives:
+#
+#   python analysis/evaluate_trajectories.py -c analysis/traj_eval_cfg_map.yaml
+#   python analysis/mapping/evaluate_maps.py eval_results/map_comparison/alignments
+#
+# The algorithm list is the subset of analysis/traj_eval_cfg.yaml that actually saves a
+# dense map: ORB-SLAM3 (sparse only) and VGGT-SLAM are left out, as is the Jetson run,
+# which reuses the desktop configuration and so would duplicate a map column.
+#
+# Alignments land in the release's trajectory frame; evaluate_maps.py composes them with
+# the per-scene transform in mapping/model_frame.yaml to reach the photogrammetry frame.
+output_dir: "./eval_results/map_comparison"
+
+ape:
+  pose_relation: "trans_part"  # Options: trans_part, rot_part, full
+  align: true
+  align_origin: false
+
+expected_trials: 5
+
+sequences:
+  - name: "monohansett_engine"
+    ground_truth: "${suds_slam}/engine/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_boiler"
+    ground_truth: "${suds_slam}/boiler/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+  - name: "monohansett_long"
+    ground_truth: "${suds_slam}/long/ground_truth/trajectory.tum"
+    time_threshold_s: 0.5
+
+algorithms:
+  # Baselines are the pre-resubmission runs; only SurfSLAM and TURTLMap were re-run.
+  # Their result trees predate 8970b4b's monohansett_start -> monohansett_engine rename,
+  # hence the sequence_aliases (same convention as traj_eval_cfg.yaml).
+  - name: "svin2"
+    base_path: "${baseline_results}/svin2/svin2_evals_20260105_152443"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "*.txt"
+    correct_scale: false
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "droidslam"
+    base_path: "${baseline_results}/droid_slam/droidslam_evals_20260104_135705"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "trajectory.txt"
+    correct_scale: false
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  - name: "mast3r_slam"
+    base_path: "${baseline_results}/mast3r_slam/mast3r_slam_evals_20260104_171134"
+    trial_pattern: "{sequence}/trial_*"
+    traj_glob: "*.txt"
+    correct_scale: true        # monocular: scale is unobservable
+    sequence_aliases: {monohansett_engine: monohansett_start}
+
+  # TurtlMap baseline, re-run 260910. The mapper is deterministic, so only trial_0 has a
+  # saved map (${slam_results}/turtlmap_maps/); evaluate_maps.py scores that one trial and
+  # skips the rest. The other four trials are still aligned here so the warning about a
+  # missing map is the only thing that distinguishes them.
+  - name: "turtlmap"
+    base_path: "${slam_results}/turtlmap"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false
+
+  # Ours, from the 260910 sweep. window_10000 is the shipped configuration, and each trial
+  # saved its own reconstructed_map.ply. The [0-9] after {sequence} is what keeps the
+  # ablation arms out: it matches the timestamp in monohansett_boiler_260910_010057 but
+  # not the "no_" in monohansett_boiler_no_dvl_260909_215449.
+  - name: "surfslam"
+    base_path: "${slam_results}/window_10000"
+    trial_pattern: "{sequence}_[0-9]*/trial_*"
+    traj_glob: "trajectory/surfslam.txt"
+    correct_scale: false

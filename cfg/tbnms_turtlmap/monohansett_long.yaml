@@ -1,0 +1,19 @@
+# TurtlMap baseline on the TBNMS long sequence, for comparison against SurfSLAM.
+#
+# baseline: turtlmap_baseline_defaults.yaml disables loop closure, frame-to-frame
+# registration and cleanup, and points tracker.backend_config_path at
+# calibration/calib_vi_optimized_tmap.yaml (fixed-lag, areCamsUsed false, 1 Hz keyframes).
+#
+# calibration: stays on calib_vi_optimized_surfslam.yaml because that is the only
+# calibration file carrying a stereo_calibration block, which the Python vision frontend
+# requires for rectification (examples/tbnms/tbnms_calibration.py:43-47). It is the same
+# physical calibration as the tmap file, which only rounds the intrinsics.
+#
+# experiment_name matches the SurfSLAM runs so analysis/ablation_eval_cfg.yaml can score
+# TurtlMap as a separate *algorithm* over the same sequences.
+baseline: turtlmap_baseline_defaults.yaml
+dataset: ${suds_slam}/long/measurements.hdf5
+calibration: PROJECT_ROOT/cfg/calibration/calib_vi_optimized_surfslam.yaml
+groundtruth_traj: ${suds_slam}/long/ground_truth/trajectory.tum
+experiment_name: monohansett_long
+dataset_family: tbnms

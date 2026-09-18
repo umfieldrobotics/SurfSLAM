@@ -1,0 +1,96 @@
+diff --git a/models/utils.py b/models/utils.py
+index 1206244..d7e2f5f 100644
+--- a/models/utils.py
++++ b/models/utils.py
+@@ -51,7 +51,6 @@ import cv2
+ import torch
+ import matplotlib.pyplot as plt
+ import matplotlib
+-matplotlib.use('Agg')
+ 
+ 
+ class AverageTimer:
+@@ -431,28 +430,53 @@ def plot_keypoints(kpts0, kpts1, color='w', ps=2):
+     ax[0].scatter(kpts0[:, 0], kpts0[:, 1], c=color, s=ps)
+     ax[1].scatter(kpts1[:, 0], kpts1[:, 1], c=color, s=ps)
+ 
+-
+-def plot_matches(kpts0, kpts1, color, lw=1.5, ps=4):
++def plot_matches(kpts0, kpts1, color, lw=1.5, ps=4, no_lines=False):
+     fig = plt.gcf()
+     ax = fig.axes
+     fig.canvas.draw()
+ 
+-    transFigure = fig.transFigure.inverted()
+-    fkpts0 = transFigure.transform(ax[0].transData.transform(kpts0))
+-    fkpts1 = transFigure.transform(ax[1].transData.transform(kpts1))
+-
+-    fig.lines = [matplotlib.lines.Line2D(
+-        (fkpts0[i, 0], fkpts1[i, 0]), (fkpts0[i, 1], fkpts1[i, 1]), zorder=1,
+-        transform=fig.transFigure, c=color[i], linewidth=lw)
+-                 for i in range(len(kpts0))]
+-    ax[0].scatter(kpts0[:, 0], kpts0[:, 1], c=color, s=ps)
+-    ax[1].scatter(kpts1[:, 0], kpts1[:, 1], c=color, s=ps)
++    if not no_lines:
++        transFigure = fig.transFigure.inverted()
++        fkpts0 = transFigure.transform(ax[0].transData.transform(kpts0))
++        fkpts1 = transFigure.transform(ax[1].transData.transform(kpts1))
++
++        fig.lines = [matplotlib.lines.Line2D(
++            (fkpts0[i, 0], fkpts1[i, 0]), (fkpts0[i, 1], fkpts1[i, 1]), zorder=1,
++            transform=fig.transFigure, c=color[i], linewidth=lw)
++                     for i in range(len(kpts0))]
++        
++        ax[0].scatter(kpts0[:, 0], kpts0[:, 1], c=color, s=ps**2, 
++                      edgecolors='white', linewidths=0.5, zorder=10)
++        ax[1].scatter(kpts1[:, 0], kpts1[:, 1], c=color, s=ps**2,
++                      edgecolors='white', linewidths=0.5, zorder=10)
++    else:
++        # Use unique colors and marker shapes for each match pair
++        markers = ['o', 's', '^', 'v', 'D', 'p', 'h', '*', 'X', 'P', 
++                   '<', '>', '8', 'H', 'd']
++        
++        # Generate distinct colors using HSV color space for better separation
++        n_matches = len(kpts0)
++        np.random.seed(42)
++        hues = np.linspace(0, 1, n_matches, endpoint=False)
++        np.random.shuffle(hues)  # Shuffle so adjacent points have different colors
++        
++        for i in range(n_matches):
++            # Convert HSV to RGB (high saturation and value for visibility)
++            h = hues[i]
++            c = matplotlib.colors.hsv_to_rgb([h, 0.9, 0.95])
++            marker = markers[i % len(markers)]
++            
++            ax[0].scatter(kpts0[i, 0], kpts0[i, 1], c=[c], s=ps**2, 
++                          marker=marker, edgecolors='white', linewidths=0.5, zorder=10)
++            ax[1].scatter(kpts1[i, 0], kpts1[i, 1], c=[c], s=ps**2,
++                          marker=marker, edgecolors='white', linewidths=0.5, zorder=10)
+ 
+ 
+ def make_matching_plot(image0, image1, kpts0, kpts1, mkpts0, mkpts1,
+                        color, text, path, show_keypoints=False,
+                        fast_viz=False, opencv_display=False,
+-                       opencv_title='matches', small_text=[]):
++                       opencv_title='matches', small_text=[],
++                       no_lines=False):
+ 
+     if fast_viz:
+         make_matching_plot_fast(image0, image1, kpts0, kpts1, mkpts0, mkpts1,
+@@ -464,7 +488,7 @@ def make_matching_plot(image0, image1, kpts0, kpts1, mkpts0, mkpts1,
+     if show_keypoints:
+         plot_keypoints(kpts0, kpts1, color='k', ps=4)
+         plot_keypoints(kpts0, kpts1, color='w', ps=2)
+-    plot_matches(mkpts0, mkpts1, color)
++    plot_matches(mkpts0, mkpts1, color, no_lines=no_lines)
+ 
+     fig = plt.gcf()
+     txt_color = 'k' if image0[:100, :150].mean() > 200 else 'w'
+@@ -480,7 +504,6 @@ def make_matching_plot(image0, image1, kpts0, kpts1, mkpts0, mkpts1,
+     plt.savefig(str(path), bbox_inches='tight', pad_inches=0)
+     plt.close()
+ 
+-
+ def make_matching_plot_fast(image0, image1, kpts0, kpts1, mkpts0,
+                             mkpts1, color, text, path=None,
+                             show_keypoints=False, margin=10,

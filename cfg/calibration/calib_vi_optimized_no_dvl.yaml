@@ -1,0 +1,159 @@
+%YAML 1.1
+---
+left_cam_params:
+    T_SC: # camera to imu - OPTIMIZED from VI run
+        [-0.00424689, 0.99984460, -0.01710992, 0.06744759,
+         -0.01995397, 0.01702194, 0.99965599, -0.01539537,
+          0.99979188, 0.00458684, 0.01987858, -0.04198770,
+          0.0, 0.0, 0.0, 1.0]
+    # Camera 1 from VI optimization
+    distortion_coefficients: [0.2323279927865304, 0.415729961570344, -0.002918615149357893, 0.0007732226566376703]
+    distortion_type: radialtangential
+    focal_length: [1420.473731786847, 1421.8955508767506]
+    principal_point: [962.2418163828817, 552.0631832148316]
+    image_dimension: [1920, 1080]
+
+right_cam_params:
+    # T_SC computed from: inv(T_left_to_right) @ T_left_to_imu
+    # T_left_to_right from VI optimization (Baseline: 114.1449 mm)
+    T_SC: [0.00075557, 0.99982583, -0.01864765, -0.04688161,
+           -0.02188084, 0.01865972, 0.99958644, -0.01534646,
+            0.99976030, -0.00034723, 0.02189113, -0.04227959,
+            0.0, 0.0, 0.0, 1.0]
+    image_dimension: [1920, 1080]
+    # Camera 2 from VI optimization
+    distortion_coefficients: [0.22047155107971406, 0.4415220073798079, -0.0016987191838028668, -0.0017179925460582255]
+    distortion_type: radialtangential
+    focal_length: [1419.6001971699616, 1421.1949680429973]
+    principal_point: [967.7960061027919, 556.8306342980005]
+
+camera_params:
+  camera_rate: 30
+  sigma_absolute_translation: 0.0
+  sigma_absolute_orientation: 0.0
+  sigma_c_relative_translation: 0.0
+  sigma_c_relative_orientation: 0.0
+
+imu_preintegration_params:
+    gap_time: 0.25 # key frame frequency
+
+
+imu_params:
+    g: 9.81007 # Earth's acceleration due to gravity [m/s^2] - should be positive value
+    acc_max: 78.48000336
+    gyro_max: 17.4533
+    gyro_noise_density: 0.00023706005095104968  # gyro noise density [rad/s/sqrt(Hz)]
+    acc_noise_density: 0.0015912879121648  # accelerometer noise density [m/s^2/sqrt(Hz)]
+    gyro_bias_prior: [0.0, 0.0, 0.0] # gyro bias prior [rad/s]
+    acc_bias_prior: [0.0, 0.0, 0.0] # accelerometer bias prior [m/s^2]
+    gyro_random_walk: 0.00033888222975686695 # gyro drift noise density [rad/s^s/sqrt(Hz)]
+    acc_random_walk: 3.39809354309875e-05  # accelerometer drift noise density [m/s^2/sqrt(Hz)]
+    integration_covariance: 0.0001
+    imu_rate: 200.0
+
+    T_BS:
+        [0.99988702, -0.00695904, -0.00803389, -0.14047952,
+         0.00703903, 0.99992601, 0.00494332, 0.00467091,
+         0.00796390, -0.00505530, 0.99991101, -0.06914719,
+         0.00000000, 0.00000000, 0.00000000, 1.00000000]
+        # [1.0, 0, 0, 0,
+        #  0, 1, 0, 0,
+        #  0, 0, 1, 0,
+        #  0, 0, 0, 1]
+
+sonar_params:
+    T_SSo:
+        [0.0000, 0.0000, 1.0000, 0.365,
+         0.0000, -1.0000, 0.0000, 0.0950005,
+         1.0000, 0.0000, 0.0000, 0.0699993,
+         0.0000, 0.0000, 0.0000, 1.0000] # Stereo Rig V1
+
+dvl_params:
+
+    T_SD:
+        [ 0.9999500, -0.0059758, -0.0080177, -0.130,
+         0.0060238,  0.9999640,  0.0059758, -0.093,
+        0.0079817, -0.0060238,  0.9999500, 0.106,
+        0.0, 0.0, 0.0, 1.0]
+    
+    T_W_WD: 
+        [1.0, 0.0, 0.0, 0.0,
+         0.0, 1.0, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0,
+         0.0, 0.0, 0.0, 1.0]
+    prior_bias: 0.0
+    fom_threshold: 0.01
+barometer_params:
+    T_SBa:
+        [1.0000, 0.0000, 0.0000, 0.0000,
+         0.0000, 1.0000, 0.0000, 0.0000,
+         0.0000, 0.0000, 1.0000, 0.0000,
+         0.0000, 0.0000, 0.0000, 1.0000]
+    atm_press: 986.3999633789062
+    enable_interframe_integration: true
+    noise_sigma: 0.005
+    min_correction_threshold: 0.005
+    enable_velocity_correction: true
+        
+
+sensor_topics:
+  dvl: "/dvl/data"
+  dvl_local_position: "/dvl/local_position"
+  imu: "/vectornav/IMU"
+  left_cam: "/zed/left/image_raw"
+  right_cam: "/zed/right/image_raw"
+  sonar: "/ping_sonar/range"
+  barometer: "/BlueROV/pressure2_fluid"
+
+sensor_list:
+    isImuUsed: true
+    isBaroUsed: true
+    isDvlUsed: false
+    isSonarUsed: false
+    areCamsUsed: true
+
+stereo_params:
+    translation_sigma: 0.04
+    rotation_sigma: 0.04
+    loop_translation_sigma: 0.2
+    loop_rotation_sigma: 0.1
+    time_tolerance: 0.2
+
+useOrbSlam: false
+
+optimization_params:
+    lambdaUpperBound: 1e10
+    lambdaLowerBound: 1e-10
+    initialLambda: 1e-5
+    maxIterations: 500
+    relativeErrorTol: 1e-5
+    absoluteErrorTol: 1e-5
+
+num_iters: 1000
+
+# Optimization backend selection
+# Options: "isam2", "batch", "fixed_lag"
+# - "isam2": Incremental smoothing and mapping (efficient, maintains full history)
+# - "batch": Full batch optimization at each keyframe (more accurate but slower)
+# - "fixed_lag": Fixed-lag smoother (marginalizes old poses, memory efficient)
+optimization_mode: "isam2"
+
+kf_gap_time: 0.75
+min_kf_delta_time: 0.01
+use_cam_for_kf: false
+external_kf_only: true
+
+using_pseudo_dvl: false
+
+# Enable/disable computation of marginal covariances at each keyframe
+# Note: Computing marginals can be computationally expensive, especially with large graphs
+# Set to false to improve performance if covariance information is not needed
+compute_marginals: true
+
+stereo_calibration:
+    # Stereo extrinsic used by the Python vision pipeline (TBNMSCalibration) for rectification
+    T_left_to_right:
+        [[0.9999863051925639, -0.0016373313752442525, 0.004970771901128158, -0.11414477572730972],
+         [0.0016468942787989716, 0.999996800005074, -0.0019203434188224322, -0.00014284654644487],
+         [-0.004967611756152387, 0.0019285034558941677, 0.9999858017531341, 7.225652941844411e-05],
+         [0.0, 0.0, 0.0, 1.0]]

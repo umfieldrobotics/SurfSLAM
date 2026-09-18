@@ -1,0 +1,7 @@
+mapper:
+  registration:
+    matching:
+      loop_closure:
+        enabled: [True, False]
+    frame_to_frame:
+      enabled: [True, False]

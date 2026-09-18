@@ -1,0 +1,17 @@
+baseline: defaults.yaml
+dataset: ${suds_slam}/boiler/measurements.hdf5
+calibration: PROJECT_ROOT/cfg/calibration/calib_vi_optimized_no_dvl.yaml
+groundtruth_traj: ${suds_slam}/boiler/ground_truth/trajectory.tum
+experiment_name: monohansett_boiler_no_dvl
+dataset_family: tbnms
+
+changes:
+  tracker:
+    backend_config_path: ./calibration/calib_vi_optimized_no_dvl.yaml
+  system:
+    log_dir_prefix: "./ablation_outputs/"
+  debug:
+    flags:
+      log_depth_images: false
+      log_raw_images: false
+      draw_teaser_inliers: false
